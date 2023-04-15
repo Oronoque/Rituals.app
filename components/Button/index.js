@@ -11,7 +11,7 @@ const Button = ({ onPress, title, size = 'medium', customStyle }) => {
     }
     if (size === 'medium') {
       return {
-        height: 60,
+        height: 50,
         width: 200,
       };
     }
@@ -26,7 +26,7 @@ const Button = ({ onPress, title, size = 'medium', customStyle }) => {
         height: style.height,
         width: style.width || 100,
         borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: 'grey',
