@@ -19,7 +19,7 @@ export const Container = styled(View)`
   width: 100%;
 `;
 
-const WelcomeScreen = ({ navigation }) => {
+const WelcomeScreen = ({ navigation, value }) => {
   const { colors } = useTheme();
   const { appData, updateAppData } = useContext(AppContext);
 
@@ -30,8 +30,8 @@ const WelcomeScreen = ({ navigation }) => {
         Welcome to Rituals
       </Text> */}
 
-      <SettingRow text="Activate notifications" />
-      <SettingRow text="Dark theme" />
+      <SettingRow icon="notifications-outline" text="Activate notifications" />
+      <SettingRow icon="moon-outline" text="Dark theme" />
       <SettingRow text="Dark theme" />
 
       {/* <Text>{JSON.stringify(appData)}</Text> */}

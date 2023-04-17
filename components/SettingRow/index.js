@@ -10,10 +10,11 @@ const SettingRow = ({ icon, text, value, type, onPress }) => {
     <View
       style={{
         flexDirection: 'row',
-        justifyContent: 'space-around',
+        justifyContent: 'space-between',
         width: '100%',
         borderBottomWidth: 1,
         paddingVertical: 8,
+        paddingHorizontal: 12,
       }}
     >
       {/* 70 */}
@@ -24,15 +25,16 @@ const SettingRow = ({ icon, text, value, type, onPress }) => {
           alignItems: 'center',
         }}
       >
-        <Ionicons name="tennisball-outline" size={26} color="#E46D2B" />
+        <Ionicons name={icon} size={26} color="#E46D2B" />
         <View style={{ marginLeft: 8 }}>
-          <Text>{text}</Text>
+          <Text size='big'>{text}</Text>
         </View>
       </View>
 
       {/* 30 */}
       <View>
-        <Switch onPress={onPress} />
+        <Switch onPress={onPress}
+        />
       </View>
     </View>
   );
