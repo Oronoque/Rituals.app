@@ -35,21 +35,19 @@ export const lightTheme = {
   },
 };
 
-// feature for later -> dark theme
+export const darkTheme = {
+  colors: {
+    ...colors,
+    primary: '#294A2E',
+    tiertiary: greys.grey40,
 
-// export const darkTheme = {
-//   colors: {
-//     ...colors,
-//     primary: '#294A2E',
-//     tiertiary: greys.grey40,
+    lightPrimary: '#f5f9f6',
 
-//     lightPrimary: '#f5f9f6',
-
-//     text: colors.white,
-//     textSecondary: greys.grey50,
-//     background: greys.grey80,
-//     borderColor: greys.grey70,
-//     lightBackground: greys.grey70,
-//     loadingPlaceholder: greys.grey40,
-//   },
-// };
+    text: colors.white,
+    textSecondary: greys.grey50,
+    background: greys.grey80,
+    borderColor: greys.grey70,
+    lightBackground: greys.grey70,
+    loadingPlaceholder: greys.grey40,
+  },
+};

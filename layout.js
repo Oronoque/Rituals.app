@@ -5,6 +5,7 @@ export const ScreenContainer = styled(View)`
   flex: 1;
   align-items: center;
   justify-content: center;
+  background-color: ${(p) => p.theme.colors.background};
 `;
 
 export const CenteredContainer = styled(View)`

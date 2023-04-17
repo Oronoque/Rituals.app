@@ -9,8 +9,8 @@ const TextComponent = ({ children, isBold, size = 'normal' }) => {
     if (size === 'small') {
       return 14;
     }
-    if (size === 'medium') {
-      return 18;
+    if (size === 'normal') {
+      return 16;
     }
     if (size === 'big') {
       return 20;
@@ -20,7 +20,7 @@ const TextComponent = ({ children, isBold, size = 'normal' }) => {
   return (
     <Text
       style={{
-        color: colors.black,
+        color: colors.text,
         fontWeight: isBold ? 'bold' : 'normal',
         fontSize: getTextSize(),
       }}
