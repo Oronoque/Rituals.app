@@ -15,6 +15,7 @@ import Text from './components/Text';
 
 import RegisterScreen from './screens/RegisterScreen';
 import SettingsScreen from './screens/SettingsScreen';
+import LoginScreen from './screens/LoginScreen';
 
 export const Container = styled(View)`
   flex: 1;
@@ -23,13 +24,6 @@ export const Container = styled(View)`
   justify-content: center;
 `;
 
-function LoginScreen() {
-  return (
-    <Container>
-      <Text>Login Screen</Text>
-    </Container>
-  );
-}
 function WelcomeScreen({ navigation }) {
   console.log('navigation:', navigation);
 
