@@ -17,7 +17,6 @@ function HomeScreen() {
 
   return (
     <ScreenContainer>
-      <Text>{JSON.stringify(appData)}</Text>
       <Text>Home Screen</Text>
 
       <Button

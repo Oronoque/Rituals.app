@@ -20,9 +20,8 @@ export const Container = styled(View)`
   justify-content: center;
 `;
 
-export default function App() {
+function Main() {
   const [isConnected, setIsConnected] = useState(false);
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
 
   const { appData, updateAppData } = useContext(AppContext);
 
@@ -38,7 +37,7 @@ export default function App() {
 
   return (
     <AppProvider>
-      <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+      <ThemeProvider theme={appData.isDarkTheme ? darkTheme : lightTheme}>
         <NavigationContainer>
           <SafeAreaView>
             <View
@@ -59,9 +58,11 @@ export default function App() {
             >
               <Text>Is dark theme:</Text>
               <Switch
-                value={isDarkTheme}
+                value={appData.isDarkTheme}
                 onValueChange={(value) => {
-                  setIsDarkTheme(value);
+                  updateAppData({
+                    isDarkTheme: value,
+                  });
                 }}
               />
             </View>
@@ -70,6 +71,15 @@ export default function App() {
         </NavigationContainer>
       </ThemeProvider>
     </AppProvider>
-
-);
+  );
 }
+
+const App = () => {
+  return (
+    <AppProvider>
+      <Main />
+    </AppProvider>
+  );
+};
+
+export default App;

@@ -1,7 +1,10 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
+import { useTheme } from 'styled-components/native';
 
-const Button = ({ onPress, title, size = 'medium', customStyle }) => {
+const Button = ({ onPress, title, size = 'medium', customStyle, isDisabled = false }) => {
+  const { colors } = useTheme();
+
   const getStyling = () => {
     if (size === 'small') {
       return {
@@ -21,6 +24,7 @@ const Button = ({ onPress, title, size = 'medium', customStyle }) => {
 
   return (
     <TouchableOpacity
+      // activeOpacity={1}
       onPress={onPress}
       style={{
         height: style.height,
@@ -29,11 +33,12 @@ const Button = ({ onPress, title, size = 'medium', customStyle }) => {
         borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'grey',
+        // backgroundColor: isDisabled ? lighter(colors.primary, 20) : colors.primary,
+        backgroundColor: isDisabled ? 'grey' : colors.primary,
         ...customStyle,
       }}
     >
-      <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>{title}</Text>
+      <Text style={{ color: colors.text, fontWeight: 'bold', fontSize: 18 }}>{title}</Text>
     </TouchableOpacity>
   );
 };
