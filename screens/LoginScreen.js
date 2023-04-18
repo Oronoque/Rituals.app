@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Input } from 'react-native-elements';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import { useTheme } from 'styled-components/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -19,6 +19,12 @@ function LoginScreen({ navigation }) {
     password: null,
     isPasswordValid: null,
   });
+
+    const handleLogin = () => {
+    // Perform the login logic here
+    // If the login is successful, set the loggedIn state to true
+    setLoggedIn(true);
+  }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -84,12 +90,50 @@ function LoginScreen({ navigation }) {
             isPasswordValid: value?.length > 3,
           });
         }}
-        leftIcon={<Ionicons name="mail" size={16} color={colors.text} style={{ marginRight: 8 }} />}
+        leftIcon={<Ionicons name="lock-closed-outline" size={16} color={colors.text} style={{ marginRight: 8 }} />}
       />
 
-      <Button isDisabled={!data.isEmailValid || !data.isPasswordValid} isNaked title="Login" />
-      <View style={{ marginTop: 12 }}>
-        <Text isBold>Already an account ?</Text>
+      {/* <Button 
+      isDisabled={!data.isEmailValid || !data.isPasswordValid} 
+      isNaked title="Login"   
+      style={{ 
+        backgroundColor: !data.isEmailValid || !data.isPasswordValid 
+        ? "rgba(255, 255, 255, 0.5)" // light color with 50% opacity
+        : undefined // default color 
+      }} /> */}
+       <TouchableOpacity
+        onPress={handleLogin}
+        disabled={!data.isEmailValid || !data.isPasswordValid}
+        style={{
+          backgroundColor: !data.isEmailValid || !data.isPasswordValid
+            ? "rgba(255, 255, 255, 0.5)" // light color with 50% opacity
+            : undefined, // default color
+          paddingVertical: 10,
+          alignItems: "center"
+        }}
+      >
+        <Text style={{ fontWeight: "bold" }}>Login</Text>
+      </TouchableOpacity>
+
+
+      {/* <View style={{ marginTop: 12 }}>
+        <Text isBold>Already an account ?</Text> */}
+         <View>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.push('Register');
+        }}
+        disabled={!data.isEmailValid || !data.isPasswordValid}
+        style={{
+          backgroundColor: !data.isEmailValid || !data.isPasswordValid
+            ? "rgba(255, 255, 255, 0.5)" // light color with 50% opacity
+            : undefined, // default color
+          paddingVertical: 10,
+          alignItems: "center"
+        }}
+      >
+        <Text style={{ fontWeight: "bold" }}>Register new account</Text>
+      </TouchableOpacity>
       </View>
     </ScreenContainer>
   );

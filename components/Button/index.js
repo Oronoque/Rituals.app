@@ -33,6 +33,7 @@ const Button = ({ onPress, title, size = 'medium', customStyle, isDisabled = fal
         borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'center',
+        marginVertical: 12,
         // backgroundColor: isDisabled ? lighter(colors.primary, 20) : colors.primary,
         backgroundColor: isDisabled ? 'grey' : colors.primary,
         ...customStyle,
