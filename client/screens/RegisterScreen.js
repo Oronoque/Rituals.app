@@ -6,12 +6,10 @@ import { useTheme } from 'styled-components/native';
 // import Ionicons from '@expo/vector-icons/Ionicons';
 import { Ionicons } from '@expo/vector-icons';
 
-
 import Text from '../components/Text';
 import Button from '../components/Button';
 
 import { ScreenContainer } from '../layout';
-
 
 function RegisterScreen() {
   const { colors } = useTheme();
@@ -25,9 +23,7 @@ function RegisterScreen() {
     isPasswordValid: null,
   });
 
-
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 
   return (
     <ScreenContainer>
@@ -77,7 +73,6 @@ function RegisterScreen() {
         placeholderTextColor={colors.placeholder}
         autoCorrect={false}
         autoCapitalize="none"
-        // errorMessage={data.isPasswordValid === false ? 'The password is invalid' : null}
         value={data.password}
         label="Password"
         inputStyle={{
@@ -91,10 +86,17 @@ function RegisterScreen() {
             isPasswordValid: value?.length > 3,
           });
         }}
-        leftIcon={<Ionicons name="lock-closed-outline" size={16} color={colors.text} style={{ marginRight: 8 }} />}
+        leftIcon={
+          <Ionicons
+            name="lock-closed-outline"
+            size={16}
+            color={colors.text}
+            style={{ marginRight: 8 }}
+          />
+        }
       />
 
-        <Input
+      <Input
         secureTextEntry={true}
         placeholder="Re-enter Password"
         placeholderTextColor={colors.placeholder}
@@ -114,13 +116,24 @@ function RegisterScreen() {
             isPasswordValid: data.password === value,
           });
         }}
-        leftIcon={<Ionicons name="lock-closed-outline" size={16} color={colors.text} style={{ marginRight: 8 }} />}
+        leftIcon={
+          <Ionicons
+            name="lock-closed-outline"
+            size={16}
+            color={colors.text}
+            style={{ marginRight: 8 }}
+          />
+        }
       />
 
-{/* disable button until passwords match */}
-      <Button 
-        isDisabled={!data.isEmailValid || !data.isPasswordValid || data.password !== data.reEnterPassword} 
-        isNaked title="Login" />     
+      {/* disable button until passwords match */}
+      <Button
+        isDisabled={
+          !data.isEmailValid || !data.isPasswordValid || data.password !== data.reEnterPassword
+        }
+        isNaked
+        title="Login"
+      />
       <View style={{ marginTop: 12 }}>
         <Text isBold>Create Account</Text>
       </View>

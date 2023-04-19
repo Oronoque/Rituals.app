@@ -1,21 +1,21 @@
 import React, { useState, useContext } from 'react';
 import { ScrollView } from 'react-native';
 
-import Text from '../components/Text';
+import Header from '../components/Header';
 import SettingRow from '../components/SettingRow';
 
 import { AppContext } from '../contexts/appContext';
 
 import { ScreenContainer } from '../layout';
 
-function SettingsScreen() {
+function SettingsScreen({ navigation }) {
   const { appData, updateAppData } = useContext(AppContext);
 
   const [gender, setGender] = useState(null);
 
   return (
     <ScreenContainer>
-      <Text>Settings Screen</Text>
+      <Header title="Settings" navigation={navigation} />
 
       <ScrollView>
         <SettingRow

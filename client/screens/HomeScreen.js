@@ -10,11 +10,6 @@ import { AppContext } from '../contexts/appContext';
 function HomeScreen() {
   const { appData, updateAppData } = useContext(AppContext);
 
-  console.log('connected stack');
-
-  console.log('updateAppData:', updateAppData);
-  console.log('appData:', appData);
-
   return (
     <ScreenContainer>
       <Text>Home Screen</Text>

@@ -39,7 +39,7 @@ const Button = ({ onPress, title, size = 'medium', customStyle, isDisabled = fal
         ...customStyle,
       }}
     >
-      <Text style={{ color: colors.text, fontWeight: 'bold', fontSize: 18 }}>{title}</Text>
+      <Text style={{ color: colors.white, fontWeight: 'bold', fontSize: 18 }}>{title}</Text>
     </TouchableOpacity>
   );
 };
