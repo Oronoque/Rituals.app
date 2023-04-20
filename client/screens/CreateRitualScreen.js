@@ -26,7 +26,7 @@ function CreateRitual({ navigation }) {
       category: data.ritualCategory,
     });
 
-    navigation.navigate('RitualsScreen');
+    navigation.navigate('CreateRitualStepScreen');
   };
 
   return (

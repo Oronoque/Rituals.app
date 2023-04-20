@@ -1,0 +1,71 @@
+{
+  "info": {
+    "_postman_id": "57e7be40-d141-4806-ba63-4421a2076aa2",
+    "name": "ritualsApp",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+
+    "_exporter_id": "1724450"
+  },
+  "item": [
+    {
+      "name": "List all rituals",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3009/api/rituals",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3009",
+          "path": ["api", "rituals"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "List one ritual",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3009/api/rituals/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3009",
+          "path": ["api", "rituals", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create one ritual",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3009/api/rituals/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3009",
+          "path": ["api", "rituals", "1"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete ritual",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3009/api/rituals/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3009",
+          "path": ["api", "rituals", "1"]
+        }
+      },
+      "response": []
+    }
+  ]
+}
