@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
-import { View } from 'react-native';
+import { View, SafeAreaView } from 'react-native';
 
-export const ScreenContainer = styled(View)`
+export const ScreenContainer = styled(SafeAreaView)`
   flex: 1;
   align-items: center;
   background-color: ${(p) => p.theme.colors.background};

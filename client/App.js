@@ -4,9 +4,10 @@ import styled from 'styled-components/native';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from 'styled-components/native';
 
+import { QueryClientProvider, QueryClient } from 'react-query';
+
 import { AppProvider, AppContext } from './contexts/appContext';
 import ActivityIndicatorScreen from './components/ActivityIndicator';
-import ThemeSwitch from './components/ThemeSwitch';
 
 import { lightTheme, darkTheme } from './theme';
 
@@ -21,28 +22,31 @@ export const Container = styled(View)`
   align-items: center;
   justify-content: center;
 `;
+const queryClient = new QueryClient();
 
 function Main() {
-  const [isConnected, setIsConnected] = useState(false);
-
   const { appData, updateAppData } = useContext(AppContext);
 
   const isAppReady = true;
 
   if (!isAppReady) {
     return (
-      <div>
+      <>
         <ActivityIndicatorScreen />
-      </div>
+      </>
     );
   }
 
+  console.log('appData in APP', appData);
+
   return (
-    <AppProvider>
-      <div>
-        <ThemeSwitch />
-      </div>
-    </AppProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={appData.isDarkTheme ? darkTheme : lightTheme}>
+        <NavigationContainer>
+          <>{appData?.isAuth ? <ConnectedStack /> : <VisitorStack />}</>
+        </NavigationContainer>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 
