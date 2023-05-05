@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Input } from 'react-native-elements';
 import { View } from 'react-native';
 
+import axios from 'axios';
+
 import { useTheme } from 'styled-components/native';
 // import Ionicons from '@expo/vector-icons/Ionicons';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,16 +16,30 @@ import { ScreenContainer } from '../layout';
 function RegisterScreen() {
   const { colors } = useTheme();
 
-  // add second password "reEnterPassword"
+  // add second password "passwordConfirm"
   const [data, setData] = useState({
     email: null,
     isEmailValid: null,
     password: null,
-    reEnterPassword: null,
+    passwordConfirm: null,
     isPasswordValid: null,
   });
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post('http://localhost:3009/api/register', {
+        email: data.email,
+        username: data.username,
+        password: data.password,
+        passwordConfirm: data.passwordConfirm,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <ScreenContainer>
@@ -98,13 +114,13 @@ function RegisterScreen() {
 
       <Input
         secureTextEntry={true}
-        placeholder="Re-enter Password"
+        placeholder="confirm password"
         placeholderTextColor={colors.placeholder}
         autoCorrect={false}
         autoCapitalize="none"
         // errorMessage={data.isPasswordValid === false ? 'The password is invalid' : null}
-        value={data.reEnterPassword}
-        label="Re-Enter Password"
+        value={data.passwordConfirm}
+        label="Password Confirm"
         inputStyle={{
           color: colors.text,
           fontSize: 18,
@@ -112,7 +128,7 @@ function RegisterScreen() {
         onChangeText={(value) => {
           return setData({
             ...data,
-            reEnterPassword: value,
+            passwordConfirm: value,
             isPasswordValid: data.password === value,
           });
         }}
@@ -129,10 +145,10 @@ function RegisterScreen() {
       {/* disable button until passwords match */}
       <Button
         isDisabled={
-          !data.isEmailValid || !data.isPasswordValid || data.password !== data.reEnterPassword
+          !data.isEmailValid || !data.isPasswordValid || data.password !== data.passwordConfirm
         }
         isNaked
-        title="Login"
+        title="Register"
       />
       <View style={{ marginTop: 12 }}>
         <Text isBold>Create Account</Text>
