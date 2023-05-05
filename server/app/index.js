@@ -10,6 +10,26 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const users = [];
+
+const login = [
+  {
+    id: generateId(),
+    username: 'FatRandy',
+    password: 'password123',
+  },
+  {
+    id: generateId(),
+    username: 'FatterRandy',
+    password: 'password456',
+  },
+  {
+    id: generateId(),
+    username: 'FattestRandy',
+    password: 'password789',
+  },
+];
+
 const rituals = [
   {
     id: generateId(),
@@ -71,6 +91,53 @@ const ritualSteps = [
   },
 ];
 
+// Define the register endpoint
+app.post('/register', (req, res) => {
+  const { email, username, password, confirmPassword } = req.body;
+
+  //returns error is username is already taken
+  if (users.find((user) => user.username === username)) {
+    return res.status(400).json({ error: 'Username already taken' });
+  }
+
+  //return error if passwords do not match
+  if (password !== confirmPassword) {
+    return res.status(400).json({ error: 'Passwords do not match' });
+  }
+
+  // create new user and add to user array
+  const newUser = {
+    id: generateId(),
+    email,
+    username,
+    password,
+  };
+  users.push(newUser);
+
+  // Send success message
+  return res.status(201).json({ message: 'User created successfully' });
+});
+
+// Define the login endpoint
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  const user = login.find((user) => user.username === username && user.password === password);
+
+  if (!user) {
+    // If the user is not found, return an error response
+    return res.status(401).json({ error: 'Invalid username or password' });
+  }
+
+  // If the user is found, return a success response
+  return res.status(200).json({ message: 'Success' });
+});
+
+// Start the server
+app.listen(3000, () => {
+  console.log('Server started on port 3000');
+});
+
+// hello rituals
 app.get('/', (req, res) => {
   res.send('Hello Rituals!');
 });

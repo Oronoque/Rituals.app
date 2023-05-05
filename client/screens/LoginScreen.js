@@ -20,11 +20,11 @@ function LoginScreen({ navigation }) {
     isPasswordValid: null,
   });
 
-    const handleLogin = () => {
+  const handleLogin = () => {
     // Perform the login logic here
     // If the login is successful, set the loggedIn state to true
     setLoggedIn(true);
-  }
+  };
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -90,7 +90,14 @@ function LoginScreen({ navigation }) {
             isPasswordValid: value?.length > 3,
           });
         }}
-        leftIcon={<Ionicons name="lock-closed-outline" size={16} color={colors.text} style={{ marginRight: 8 }} />}
+        leftIcon={
+          <Ionicons
+            name="lock-closed-outline"
+            size={16}
+            color={colors.text}
+            style={{ marginRight: 8 }}
+          />
+        }
       />
 
       {/* <Button 
@@ -101,39 +108,40 @@ function LoginScreen({ navigation }) {
         ? "rgba(255, 255, 255, 0.5)" // light color with 50% opacity
         : undefined // default color 
       }} /> */}
-       <TouchableOpacity
+      <TouchableOpacity
         onPress={handleLogin}
         disabled={!data.isEmailValid || !data.isPasswordValid}
         style={{
-          backgroundColor: !data.isEmailValid || !data.isPasswordValid
-            ? "rgba(255, 255, 255, 0.5)" // light color with 50% opacity
-            : undefined, // default color
+          backgroundColor:
+            !data.isEmailValid || !data.isPasswordValid
+              ? 'rgba(255, 255, 255, 0.5)' // light color with 50% opacity
+              : undefined, // default color
           paddingVertical: 10,
-          alignItems: "center"
+          alignItems: 'center',
         }}
       >
-        <Text style={{ fontWeight: "bold" }}>Login</Text>
+        <Text style={{ fontWeight: 'bold' }}>Login</Text>
       </TouchableOpacity>
-
 
       {/* <View style={{ marginTop: 12 }}>
         <Text isBold>Already an account ?</Text> */}
-         <View>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.push('Register');
-        }}
-        disabled={!data.isEmailValid || !data.isPasswordValid}
-        style={{
-          backgroundColor: !data.isEmailValid || !data.isPasswordValid
-            ? "rgba(255, 255, 255, 0.5)" // light color with 50% opacity
-            : undefined, // default color
-          paddingVertical: 10,
-          alignItems: "center"
-        }}
-      >
-        <Text style={{ fontWeight: "bold" }}>Register new account</Text>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.push('Register');
+          }}
+          disabled={!data.isEmailValid || !data.isPasswordValid}
+          style={{
+            backgroundColor:
+              !data.isEmailValid || !data.isPasswordValid
+                ? 'rgba(255, 255, 255, 0.5)' // light color with 50% opacity
+                : undefined, // default color
+            paddingVertical: 10,
+            alignItems: 'center',
+          }}
+        >
+          <Text style={{ fontWeight: 'bold' }}>Register new account</Text>
+        </TouchableOpacity>
       </View>
     </ScreenContainer>
   );

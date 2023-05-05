@@ -5,6 +5,8 @@ import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from 'styled-components/native';
 
 import { AppProvider, AppContext } from './contexts/appContext';
+import ActivityIndicatorScreen from './components/ActivityIndicator';
+import ThemeSwitch from './components/ThemeSwitch';
 
 import { lightTheme, darkTheme } from './theme';
 
@@ -29,47 +31,17 @@ function Main() {
 
   if (!isAppReady) {
     return (
-      <SafeAreaView style={{ flex: 1, justifyContent: 'center' }}>
-        <ActivityIndicator size="large" />
-      </SafeAreaView>
+      <div>
+        <ActivityIndicatorScreen />
+      </div>
     );
   }
 
   return (
     <AppProvider>
-      <ThemeProvider theme={appData.isDarkTheme ? darkTheme : lightTheme}>
-        <NavigationContainer>
-          <SafeAreaView>
-            <View
-              style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}
-            >
-              <Text>Toggle authentication:</Text>
-              <Switch
-                value={isConnected}
-                onValueChange={(value) => {
-                  setIsConnected(value);
-                  console.log('value:', value);
-                }}
-              />
-            </View>
-
-            <View
-              style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around' }}
-            >
-              <Text>Is dark theme:</Text>
-              <Switch
-                value={appData.isDarkTheme}
-                onValueChange={(value) => {
-                  updateAppData({
-                    isDarkTheme: value,
-                  });
-                }}
-              />
-            </View>
-          </SafeAreaView>
-          {isConnected ? <ConnectedStack /> : <VisitorStack />}
-        </NavigationContainer>
-      </ThemeProvider>
+      <div>
+        <ThemeSwitch />
+      </div>
     </AppProvider>
   );
 }
