@@ -3,12 +3,23 @@ const port = 3009;
 const bodyParser = require('body-parser');
 
 const { generateId } = require('./utils/string');
-console.log('generateId:', generateId);
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(bodyParser.json());
+
+const db = require('../app/models');
+
+db.sequelize
+  .sync()
+  .then(() => {
+    console.log('Synced db.');
+  })
+  .catch((err) => {
+    console.log('Failed to sync db: ' + err.message);
+  });
 
 const users = [
   {
@@ -94,49 +105,77 @@ app.get('/api/users', (req, res) => {
   res.send(users);
 });
 
-// define the register endpoint
-app.post('/api/register', (req, res) => {
-  const { email, username, password } = req.body;
+// list all users
+app.get('/api/listUsers', async (req, res) => {
+  const users = await db.users.findAll({});
 
-  if (!email || !username || !password) {
-    return res.status(400).json({ error: 'missing_parameters' });
+  return res.json({ users });
+});
+
+app.post('/api/register', async (req, res) => {
+  try {
+    const { email, username, password } = req.body;
+
+    // check the good params
+    if (!email || !username || !password) {
+      return res.status(400).json({ error: 'missing_parameters' });
+    }
+
+    // check in DB if email already exists
+    const userEmailDB = await db.users.findOne({ where: { email } });
+
+    if (userEmailDB) {
+      return res.status(400).json({ error: 'email_already_exists' });
+    }
+
+    // check in DB if username already exists
+    const userUsernameDB = await db.users.findOne({ where: { username } });
+
+    if (userUsernameDB) {
+      return res.status(400).json({ error: 'username_already_exists' });
+    }
+
+    const createdUser = await db.users.create(
+      {
+        username,
+        email,
+        password,
+      },
+      { returning: true },
+    );
+
+    // Send success message
+    return res.status(201).json({ success: true, data: createdUser });
+  } catch (error) {
+    console.log('error:', error);
+    return res.json({ success: false });
   }
-
-  // returns error is username is already taken
-  if (users.find((user) => user.username === username)) {
-    return res.status(400).json({ error: 'username_already_taken' });
-  }
-
-  // create new user and add to user array
-  const newUser = {
-    id: generateId(),
-    email,
-    username,
-    password,
-  };
-  users.push(newUser);
-
-  // Send success message
-  return res.status(201).json({ message: 'User created successfully' });
 });
 
 // define the login endpoint
-app.post('/api/login', (req, res) => {
+app.post('/api/login', async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
     return res.status(400).json({ error: 'missing_parameters' });
   }
 
-  const user = users.find((user) => user.username === email && user.password === password);
+  const userDB = await db.users.findOne({
+    where: {
+      email,
+      password,
+    },
+  });
 
-  if (!user) {
+  console.log('userDB', userDB);
+
+  if (!userDB) {
     // If the user is not found, return an error response
-    return res.status(401).json({ error: 'Invalid username or password' });
+    return res.status(401).json({ success: false });
   }
 
   // If the user is found, return a success response
-  return res.status(200).json({ success: true, data: user });
+  return res.status(200).json({ success: true, data: userDB });
 });
 
 // Start the server
