@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Input } from 'react-native-elements';
 import { View } from 'react-native';
 
@@ -10,12 +10,18 @@ import { Ionicons } from '@expo/vector-icons';
 
 import Text from '../components/Text';
 import Button from '../components/Button';
+import { AppContext } from '../contexts/appContext';
+
+import { register } from '../hooks/queries/user';
 
 import { ScreenContainer } from '../layout';
 
 function RegisterScreen() {
   const { colors } = useTheme();
-
+  const { mutate: registerMutation, isSuccess, isError, error } = register();
+  const { appData, updateAppData } = useContext(AppContext);
+  console.log('appData:', appData);
+  const [errorState, setErrorState] = useState();
   // add second password "passwordConfirm"
   const [data, setData] = useState({
     email: null,
@@ -27,19 +33,24 @@ function RegisterScreen() {
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const handleRegister = async () => {
-    try {
-      const response = await axios.post('http://localhost:3009/api/register', {
-        email: data.email,
-        username: data.username,
-        password: data.password,
-        passwordConfirm: data.passwordConfirm,
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
+  const handleRegister2 = async () => {
+    registerMutation({
+      email: data.email,
+      password: data.password,
+      // username: data.username,
+    });
   };
+
+  useEffect(() => {
+    if (error?.dot?.dot === 'toto') {
+      // setErrorState ('email_already exists');
+    }
+    if (error?.dot?.dot === 'toto') {
+      // setErrorState ('username_already exists');
+    }
+  }, [error]);
+
+  console.log('error', error);
 
   return (
     <ScreenContainer>
@@ -57,6 +68,7 @@ function RegisterScreen() {
           color: colors.text,
           fontSize: 18,
         }}
+        errorMessage={errorState ? errorState : null}
         onChangeText={(value) => {
           return setData({
             ...data,
@@ -144,6 +156,7 @@ function RegisterScreen() {
 
       {/* disable button until passwords match */}
       <Button
+        onPress={handleRegister2}
         isDisabled={
           !data.isEmailValid || !data.isPasswordValid || data.password !== data.passwordConfirm
         }

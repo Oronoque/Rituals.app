@@ -21,24 +21,6 @@ db.sequelize
     console.log('Failed to sync db: ' + err.message);
   });
 
-const users = [
-  {
-    id: generateId(),
-    username: 'FatRandy',
-    password: 'password123',
-  },
-  {
-    id: generateId(),
-    username: 'FatterRandy',
-    password: 'password456',
-  },
-  {
-    id: generateId(),
-    username: 'FattestRandy',
-    password: 'password789',
-  },
-];
-
 const rituals = [
   {
     id: generateId(),
@@ -101,23 +83,18 @@ const ritualSteps = [
 ];
 
 // list all users
-app.get('/api/users', (req, res) => {
-  res.send(users);
-});
-
-// list all users
-app.get('/api/listUsers', async (req, res) => {
+app.get('/api/users', async (req, res) => {
   const users = await db.users.findAll({});
 
-  return res.json({ users });
+  return res.json({ success: true, data: users });
 });
 
 app.post('/api/register', async (req, res) => {
   try {
-    const { email, username, password } = req.body;
+    const { email, password } = req.body;
 
     // check the good params
-    if (!email || !username || !password) {
+    if (!email || !password) {
       return res.status(400).json({ error: 'missing_parameters' });
     }
 
@@ -128,16 +105,8 @@ app.post('/api/register', async (req, res) => {
       return res.status(400).json({ error: 'email_already_exists' });
     }
 
-    // check in DB if username already exists
-    const userUsernameDB = await db.users.findOne({ where: { username } });
-
-    if (userUsernameDB) {
-      return res.status(400).json({ error: 'username_already_exists' });
-    }
-
     const createdUser = await db.users.create(
       {
-        username,
         email,
         password,
       },
@@ -166,8 +135,6 @@ app.post('/api/login', async (req, res) => {
       password,
     },
   });
-
-  console.log('userDB', userDB);
 
   if (!userDB) {
     // If the user is not found, return an error response
