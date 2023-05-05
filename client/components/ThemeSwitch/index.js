@@ -2,7 +2,8 @@ import React, { useContext } from 'react';
 import { Switch, View } from 'react-native';
 import { ThemeProvider } from 'styled-components/native';
 
-import { AppContext } from '../contexts/appContext';
+import { AppContext } from '../../contexts/appContext';
+
 import { lightTheme, darkTheme } from '../theme';
 
 import Text from './Text';
