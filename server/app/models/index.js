@@ -1,9 +1,9 @@
 const { Sequelize } = require('sequelize');
 
 const DB_HOST = 'localhost';
-const DB_USERNAME = 'me';
-const DB_PASSWORD = 'password';
-const DB_NAME = 'ritualapp';
+const DB_USERNAME = 'postgres';
+const DB_PASSWORD = '5050';
+const DB_NAME = 'ritualApp';
 
 const OPTIONS = {
   host: DB_HOST,

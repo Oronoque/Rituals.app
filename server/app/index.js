@@ -89,6 +89,7 @@ app.get('/api/users', async (req, res) => {
   return res.json({ success: true, data: users });
 });
 
+//create user through registration and store in database.
 app.post('/api/register', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -113,7 +114,7 @@ app.post('/api/register', async (req, res) => {
       { returning: true },
     );
 
-    // Send success message
+    // send success message
     return res.status(201).json({ success: true, data: createdUser });
   } catch (error) {
     console.log('error:', error);
