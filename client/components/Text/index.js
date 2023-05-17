@@ -2,7 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
-const TextComponent = ({ children, isBold, size = 'normal', customStyle }) => {
+const TextComponent = ({ children, isBold, size = 'normal', customStyle, textColor }) => {
   // const { colors = {} } = useTheme();
   const colors = {};
   const getTextSize = () => {
@@ -20,7 +20,7 @@ const TextComponent = ({ children, isBold, size = 'normal', customStyle }) => {
   return (
     <Text
       style={{
-        color: colors.text,
+        color: textColor || colors.text,
         fontWeight: isBold ? 'bold' : 'normal',
         fontSize: getTextSize(),
         ...customStyle,

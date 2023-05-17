@@ -10,6 +10,8 @@ import { ScreenContainer } from '../layout';
 
 import { AppContext } from '../contexts/appContext';
 
+import { API_URL } from '@env';
+
 function RitualScreen({ route, navigation }) {
   const ritualIdParam = route?.params?.ritualIdParam;
 
@@ -22,7 +24,7 @@ function RitualScreen({ route, navigation }) {
     const loadRitual = async () => {
       setIsLoading(true);
 
-      const res = await axios.get(`http://localhost:3009/api/rituals/${ritualIdParam}`);
+      const res = await axios.get(`${API_URL}/rituals/${ritualIdParam}`);
       const { data } = res;
 
       setRitual(data);

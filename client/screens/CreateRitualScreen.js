@@ -8,6 +8,8 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Text from '../components/Text';
 import Button from '../components/Button';
 
+import { API_URL } from '@env';
+
 import { ScreenContainer } from '../layout';
 
 function CreateRitual({ navigation }) {
@@ -21,7 +23,7 @@ function CreateRitual({ navigation }) {
   console.log('data', data);
 
   const handleAddCategory = async () => {
-    const request = await axios.post('http://localhost:3009/api/rituals', {
+    const request = await axios.post(`${API_URL}/rituals`, {
       name: data.ritualName,
       category: data.ritualCategory,
     });

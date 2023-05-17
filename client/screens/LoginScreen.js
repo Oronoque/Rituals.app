@@ -9,9 +9,12 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 
 import { ScreenContainer } from '../layout';
+import { login } from '../hooks/queries/user';
 
 function LoginScreen({ navigation }) {
   const { colors } = useTheme();
+  const { mutate: loginMutation, isSuccess, isError, error } = login();
+  console.log('isError:', isError);
 
   const [data, setData] = useState({
     email: null,
@@ -23,7 +26,8 @@ function LoginScreen({ navigation }) {
   const handleLogin = () => {
     // Perform the login logic here
     // If the login is successful, set the loggedIn state to true
-    setLoggedIn(true);
+    // setLoggedIn(true);
+    loginMutation({ email: data.email, password: data.password });
   };
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -100,13 +104,19 @@ function LoginScreen({ navigation }) {
         }
       />
 
-      {/* <Button 
-      isDisabled={!data.isEmailValid || !data.isPasswordValid} 
-      isNaked title="Login"   
-      style={{ 
-        backgroundColor: !data.isEmailValid || !data.isPasswordValid 
+      {isError ? (
+        <View style={{ height: 40 }}>
+          <Text textColor="red">Login failed</Text>
+        </View>
+      ) : null}
+
+      {/* <Button
+      isDisabled={!data.isEmailValid || !data.isPasswordValid}
+      isNaked title="Login"
+      style={{
+        backgroundColor: !data.isEmailValid || !data.isPasswordValid
         ? "rgba(255, 255, 255, 0.5)" // light color with 50% opacity
-        : undefined // default color 
+        : undefined // default color
       }} /> */}
       <TouchableOpacity
         onPress={handleLogin}

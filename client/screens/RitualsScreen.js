@@ -11,6 +11,8 @@ import { ScreenContainer } from '../layout';
 
 import { AppContext } from '../contexts/appContext';
 
+import { API_URL } from '@env';
+
 function RitualsScreen({ navigation }) {
   const { appData, updateAppData } = useContext(AppContext);
 
@@ -20,7 +22,7 @@ function RitualsScreen({ navigation }) {
   const loadRituals = async () => {
     setIsLoading(true);
 
-    const res = await axios.get('http://localhost:3009/api/rituals');
+    const res = await axios.get(`${API_URL}/rituals`);
     const { data } = res;
 
     setRituals(data);
@@ -32,7 +34,7 @@ function RitualsScreen({ navigation }) {
   }, []);
 
   const handleDeleteRitual = async ({ ritualId }) => {
-    await axios.delete(`http://localhost:3009/api/rituals/${ritualId}`);
+    await axios.delete(`${API_URL}/rituals/${ritualId}`);
     loadRituals();
   };
 

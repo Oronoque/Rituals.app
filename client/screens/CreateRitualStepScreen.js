@@ -3,7 +3,7 @@ import { Input } from 'react-native-elements';
 import { View } from 'react-native';
 import axios from 'axios';
 import { useTheme } from 'styled-components/native';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import { API_URL } from '@env';
 
 import Text from '../components/Text';
 import Button from '../components/Button';
@@ -18,10 +18,8 @@ function CreateRitualStep({ route, navigation }) {
     stepName: null,
   });
 
-  console.log('data', data);
-
   const handleAddStep = async () => {
-    const request = await axios.post('http://localhost:3009/api/ritualSteps', {
+    const request = await axios.post(`${API_URL}/ritualSteps`, {
       name: data.stepName,
       ritualName: parentRitual,
     });
@@ -52,11 +50,7 @@ function CreateRitualStep({ route, navigation }) {
         }}
       />
 
-      <Button
-        onPress={handleAddStep}
-        title="Add"
-        isDisabled={!data.stepName}
-      />
+      <Button onPress={handleAddStep} title="Add" isDisabled={!data.stepName} />
     </ScreenContainer>
   );
 }

@@ -20,7 +20,7 @@ function RegisterScreen() {
   const { colors } = useTheme();
   const { mutate: registerMutation, isSuccess, isError, error } = register();
   const { appData, updateAppData } = useContext(AppContext);
-  console.log('appData:', appData);
+
   const [errorState, setErrorState] = useState();
   // add second password "passwordConfirm"
   const [data, setData] = useState({

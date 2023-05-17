@@ -1,6 +1,8 @@
 const express = require('express');
 const port = 3009;
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const { generateId } = require('./utils/string');
 
@@ -11,6 +13,32 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const db = require('../app/models');
+
+const saltRounds = 10;
+
+const SECRET = 'mySecret';
+
+async function hashPassword(password) {
+  const salt = await bcrypt.genSalt(saltRounds);
+  const hashedPassword = await bcrypt.hash(password, salt);
+  return hashedPassword;
+}
+
+async function comparePassword(password, hash) {
+  const match = await bcrypt.compare(password, hash);
+  return match;
+}
+
+function generateToken(userId, email) {
+  const payload = {
+    userId,
+    email,
+  };
+
+  const token = jwt.sign(payload, SECRET);
+
+  return token;
+}
 
 db.sequelize
   .sync()
@@ -105,16 +133,20 @@ app.post('/api/register', async (req, res) => {
       return res.status(400).json({ error: 'email_already_exists' });
     }
 
+    const hashedPassword = await hashPassword(password);
+
     const createdUser = await db.users.create(
       {
         email,
-        password,
+        password: hashedPassword,
       },
       { returning: true },
     );
 
+    const newToken = generateToken(createdUser.id, createdUser.email);
+
     // Send success message
-    return res.status(201).json({ success: true, data: createdUser });
+    return res.status(201).json({ success: true, data: createdUser, token: newToken });
   } catch (error) {
     console.log('error:', error);
     return res.json({ success: false });
@@ -129,20 +161,48 @@ app.post('/api/login', async (req, res) => {
     return res.status(400).json({ error: 'missing_parameters' });
   }
 
-  const userDB = await db.users.findOne({
+  const userDB = await db.users.scope('auth').findOne({
     where: {
       email,
-      password,
     },
   });
 
-  if (!userDB) {
+  const passwordValidation = await comparePassword(password, userDB.password);
+
+  if (!userDB || !passwordValidation) {
     // If the user is not found, return an error response
     return res.status(401).json({ success: false });
   }
 
+  const newToken = generateToken(userDB.id, userDB.email);
+
   // If the user is found, return a success response
-  return res.status(200).json({ success: true, data: userDB });
+  return res.status(200).json({ success: true, data: userDB, token: newToken });
+});
+
+app.post('/api/ping', async (req, res) => {
+  const { token } = req.body;
+
+  try {
+    if (!token) {
+      return res.status(400).json({ error: 'missing_parameters' });
+    }
+
+    const decoded = jwt.verify(token, SECRET);
+    const userId = decoded.userId;
+
+    const userDB = await db.users.findOne({
+      where: { id: userId },
+    });
+
+    if (userDB) {
+      return res.send({ success: true, data: userDB });
+    }
+
+    return res.status(401).json({ error: 'Invalid token' });
+  } catch (error) {
+    return res.status(401).json({ error: 'Invalid token' });
+  }
 });
 
 // Start the server

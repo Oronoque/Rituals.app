@@ -11,6 +11,7 @@ import Loader from '../components/Loader';
 
 import { ScreenContainer } from '../layout';
 import { getAllUsers } from '../hooks/queries/user';
+import { removeStorageItem, getStorageItem } from '../services/storage';
 
 import { AppContext } from '../contexts/appContext';
 
@@ -24,12 +25,22 @@ function HomeScreen() {
     isRefetching,
   } = getAllUsers({
     options: {
-      refetchInterval: 1000,
+      // refetchInterval: 1000,
       // enabled: false,
     },
   });
 
+  useEffect(() => {
+    const checkStorage = async () => {
+      const internalToken = await getStorageItem('token');
+      console.log('internalToken:', internalToken);
+    };
+    checkStorage();
+  }, []);
+
   const handleLogout = () => {
+    removeStorageItem('token');
+
     updateAppData({
       isAuth: false,
     });
@@ -61,6 +72,7 @@ function HomeScreen() {
       )}
 
       <Button title="Refresh" onPress={refetch} />
+
       <Button title="Logout" onPress={handleLogout} customStyle={{ backgroundColor: 'red' }} />
     </ScreenContainer>
   );

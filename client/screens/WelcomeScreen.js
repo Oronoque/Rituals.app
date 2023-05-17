@@ -1,10 +1,12 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { useTheme } from 'styled-components/native';
 
 import Text from '../components/Text';
 import Button from '../components/Button';
+
+import { getStorageItem } from '../services/storage';
 
 import { AppContext } from '../contexts/appContext';
 
@@ -21,6 +23,14 @@ const WelcomeScreen = ({ navigation, value }) => {
   const { appData, updateAppData } = useContext(AppContext);
 
   console.log('navigation:', navigation);
+
+  useEffect(() => {
+    const checkStorage = async () => {
+      const internalToken = await getStorageItem('token');
+      console.log('internalToken:', internalToken);
+    };
+    checkStorage();
+  }, []);
 
   return (
     <Container>
