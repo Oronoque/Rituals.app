@@ -24,7 +24,7 @@ export const register = () => {
 
   return useMutation(
     async ({ email, password }) => {
-      const { data } = await axios.post(`${API_URL}/register`, {
+      const { data } = await axios.post(`${API_URL}/auth/register`, {
         email,
         password,
       });
@@ -57,7 +57,7 @@ export const login = () => {
     async ({ email, password }) => {
       console.log('API_URL useMutation:', API_URL);
 
-      const { data } = await axios.post(`${API_URL}/login`, {
+      const { data } = await axios.post(`${API_URL}/auth/login`, {
         email,
         password,
       });

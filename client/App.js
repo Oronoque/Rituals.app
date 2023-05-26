@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { View, SafeAreaView, Switch, ActivityIndicator } from 'react-native';
+import { View } from 'react-native';
 import styled from 'styled-components/native';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from 'styled-components/native';
@@ -11,8 +11,6 @@ import { AppProvider, AppContext } from './contexts/appContext';
 import ActivityIndicatorScreen from './components/ActivityIndicator';
 
 import { lightTheme, darkTheme } from './theme';
-
-import Text from './components/Text';
 
 import VisitorStack from './stacks/VisitorStack';
 import ConnectedStack from './stacks/ConnectedStack';
@@ -41,7 +39,7 @@ function Main() {
         const internalToken = await getStorageItem('token');
 
         if (internalToken) {
-          const { data } = await axios.post(`${API_URL}/ping`, {
+          const { data } = await axios.post(`${API_URL}/auth/ping`, {
             token: internalToken,
           });
 

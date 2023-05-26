@@ -1,13 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
 import { View } from 'react-native';
-
-import { useQuery } from 'react-query';
 
 import Text from '../components/Text';
 import Button from '../components/Button';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
+import Modal from '../components/Modal';
+import CreateUpdateRitual from '../components/CreateUpdateRitual';
 
 import { ScreenContainer } from '../layout';
 import { getAllUsers } from '../hooks/queries/user';
@@ -16,17 +15,18 @@ import { removeStorageItem, getStorageItem } from '../services/storage';
 import { AppContext } from '../contexts/appContext';
 
 function HomeScreen() {
+  const [isRitualModalOpen, setIsRitualModalOpen] = useState(false);
+
   const { appData, updateAppData } = useContext(AppContext);
 
   const {
-    data: users,
+    data: usersData,
     isLoading,
-    refetch,
     isRefetching,
+    refetch,
   } = getAllUsers({
     options: {
-      // refetchInterval: 1000,
-      // enabled: false,
+      // enabled: !appData.isAuth,
     },
   });
 
@@ -48,16 +48,16 @@ function HomeScreen() {
 
   return (
     <ScreenContainer>
-      <Header title="Homescreen" />
+      <Header title="Home" />
 
       {isLoading ? (
         <Loader />
-      ) : users?.length === 0 ? (
+      ) : usersData?.length === 0 ? (
         <View style={{ borderWidth: 1 }}>
           <Text>No users found</Text>
         </View>
       ) : (
-        users?.map((user) => {
+        usersData?.map((user) => {
           return (
             <View
               key={user.id}
@@ -71,9 +71,27 @@ function HomeScreen() {
         })
       )}
 
+      <Button
+        title="Create ritual"
+        onPress={() => {
+          setIsRitualModalOpen(true);
+        }}
+      />
+
       <Button title="Refresh" onPress={refetch} />
 
       <Button title="Logout" onPress={handleLogout} customStyle={{ backgroundColor: 'red' }} />
+
+      <Modal
+        height="80%"
+        onClose={() => {
+          setIsRitualModalOpen(false);
+        }}
+        isOpen={isRitualModalOpen}
+        withCloseButton={true}
+      >
+        {<CreateUpdateRitual />}
+      </Modal>
     </ScreenContainer>
   );
 }

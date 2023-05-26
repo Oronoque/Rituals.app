@@ -24,18 +24,16 @@ const Button = ({ onPress, title, size = 'medium', customStyle, isDisabled = fal
 
   return (
     <TouchableOpacity
-      // activeOpacity={1}
+      activeOpacity={isDisabled ? 1 : 0}
       onPress={onPress}
       style={{
         height: style.height,
         width: style.width || 100,
-        borderWidth: 1,
         borderRadius: 30,
         alignItems: 'center',
         justifyContent: 'center',
         marginVertical: 12,
-        // backgroundColor: isDisabled ? lighter(colors.primary, 20) : colors.primary,
-        backgroundColor: isDisabled ? 'grey' : colors.primary,
+        backgroundColor: isDisabled ? colors.disabled : colors.primary,
         ...customStyle,
       }}
     >

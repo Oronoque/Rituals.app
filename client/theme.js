@@ -24,6 +24,7 @@ export const lightTheme = {
     primary: '#294A2E',
     tiertiary: greys.grey40,
     lightPrimary: '#f5f9f6',
+    disabled: '#66aa71',
 
     text: colors.black,
     placeholder: colors.grey80,
