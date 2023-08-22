@@ -1,6 +1,4 @@
 module.exports = (app) => {
-  console.log('HEYYY');
-
   const ritualCategories = require('../controllers/ritualCategory.controller.js');
 
   var router = require('express').Router();

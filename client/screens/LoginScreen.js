@@ -13,8 +13,7 @@ import { login } from '../hooks/queries/user';
 
 function LoginScreen({ navigation }) {
   const { colors } = useTheme();
-  const { mutate: loginMutation, isSuccess, isError, error } = login();
-  console.log('isError:', isError);
+  const { mutate: loginMutation, isError } = login();
 
   const [data, setData] = useState({
     email: null,

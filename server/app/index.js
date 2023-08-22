@@ -1,5 +1,5 @@
 const express = require('express');
-const port = 3009;
+const port = 9999;
 const bodyParser = require('body-parser');
 
 const app = express();
@@ -23,11 +23,6 @@ require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
 require('./routes/ritual.routes')(app);
 require('./routes/ritualCategory.routes')(app);
-
-// Start the server
-app.listen(3000, () => {
-  console.log('Server started on port 3000');
-});
 
 // hello rituals
 app.get('/', (req, res) => {

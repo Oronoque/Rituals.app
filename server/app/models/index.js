@@ -26,5 +26,6 @@ db.sequelize = sequelize;
 
 db.users = require('./user.model.js')(sequelize, Sequelize);
 db.rituals = require('./ritual.model.js')(sequelize, Sequelize);
+db.ritualCategories = require('./ritualCategory.model.js')(sequelize, Sequelize);
 
 module.exports = db;

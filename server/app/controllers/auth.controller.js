@@ -42,9 +42,13 @@ exports.login = async (req, res) => {
       },
     });
 
+    if (!userDB) {
+      return res.status(401).json({ success: false });
+    }
+
     const passwordValidation = await comparePassword(password, userDB.password);
 
-    if (!userDB || !passwordValidation) {
+    if (!passwordValidation) {
       // If the user is not found, return an error response
       return res.status(401).json({ success: false });
     }

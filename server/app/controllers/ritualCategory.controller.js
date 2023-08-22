@@ -1,85 +1,102 @@
 const Sequelize = require('sequelize');
 
 const db = require('../models');
-
-const { generateId } = require('../utils/string');
-
-const ritualCategories = [
-  {
-    id: generateId(),
-    name: 'fitness',
-  },
-  {
-    id: generateId(),
-    name: 'daily',
-  },
-  {
-    id: generateId(),
-    name: 'deep work',
-  },
-];
+const RitualCategories = db.ritualCategories;
 
 exports.getRitualCategories = async (req, res) => {
-  return res.send(ritualCategories);
+  const ritualCatogories = await RitualCategories.findAll({
+    order: [['order', 'ASC']],
+  });
+
+  return res.send(ritualCatogories);
 };
 
 exports.getRitualCategory = async (req, res) => {
   const { ritualCategoryId } = req.params;
 
-  const category = ritualCategories.find((category) => category.id === ritualCategoryId);
+  const ritualCategoryDB = await RitualCategories.findOne({ where: { id: ritualCategoryId } });
 
-  if (category) {
-    return res.send(category);
-  }
-
-  return res.status(404).send();
-};
-
-exports.createRitualCategory = async (req, res) => {
-  const { name } = req.body;
-
-  if (!name) {
-    return res.status(400).send('params_missing');
-  }
-
-  ritualCategories.push({
-    id: generateId(),
-    name,
-  });
-
-  return res.send({ success: true, data: ritualCategories });
-};
-
-exports.updateRitualCategory = async (req, res) => {
-  const { ritualCategoryId } = req.params;
-
-  const { name } = req.body;
-
-  const categoryIndex = ritualCategories.findIndex((category) => category.id === ritualCategoryId);
-
-  if (categoryIndex === -1) {
+  if (!ritualCategoryDB) {
     return res.status(404).send();
   }
 
-  let matchingRitualCategory = ritualCategories[categoryIndex];
+  return res.status(200).send(ritualCategoryDB);
+};
 
-  const updatedCategory = {
-    id: matchingRitualCategory.id,
-    name: name || matchingRitualCategory.name,
-  };
+exports.createRitualCategory = async (req, res) => {
+  try {
+    const { name } = req.body;
 
-  return res.send({ success: true, data: updatedCategory });
+    const ritualCategoryDB = await RitualCategories.findOne({ where: { name } });
+
+    if (ritualCategoryDB) {
+      return res.status(409).send('already_exists');
+    }
+
+    if (!name) {
+      return res.status(400).send('params_missing');
+    }
+
+    const createdRitualCategory = await RitualCategories.create({ name });
+
+    return res.send({ success: true, data: createdRitualCategory });
+  } catch (error) {
+    console.log('error:', error);
+    return res.status(500).send({ error });
+  }
+};
+
+exports.updateRitualCategory = async (req, res) => {
+  try {
+    const { ritualCategoryId } = req.params;
+    const { name, order } = req.body;
+
+    if (!name) {
+      return res.status(400).send('params_missing');
+    }
+
+    const ritualCategoryDB = await RitualCategories.findOne({ where: { id: ritualCategoryId } });
+
+    if (!ritualCategoryDB) {
+      return res.status(404).send('not_found');
+    }
+
+    await RitualCategories.update(
+      { name, order },
+      {
+        where: {
+          id: ritualCategoryId,
+        },
+      },
+    );
+
+    return res.send({ success: true });
+  } catch (error) {
+    console.log('error:', error);
+    return res.status(500).send({ error });
+  }
 };
 
 exports.deleteRitualCategory = async (req, res) => {
   const { ritualCategoryId } = req.params;
+  console.log('ritualCategoryId:', ritualCategoryId);
 
-  const matchingIndex = ritualCategories.findIndex((ritual) => ritual.id === ritualCategoryId);
+  try {
+    const ritualCategoryDB = await RitualCategories.findOne({ where: { id: ritualCategoryId } });
 
-  if (matchingIndex !== -1) {
-    ritualCategories.splice(matchingIndex, 1);
-    return res.send({ success: true, data: ritualCategories });
+    if (!ritualCategoryDB) {
+      return res.status(404).send('not_found');
+    }
+
+    await RitualCategories.destroy({
+      where: {
+        id: ritualCategoryId,
+      },
+    });
+
+    return res.send({ success: true });
+  } catch (error) {
+    console.log('error:', error);
+    return res.status(500).send({ error });
   }
-
-  return res.status(404).send();
 };
