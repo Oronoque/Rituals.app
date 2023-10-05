@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const RitualCategory = sequelize.define('ritualCategory', {
+  const RitualTask = sequelize.define('ritualTask', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -10,13 +10,11 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       unique: true,
     },
-    pictureName: {
-      type: Sequelize.STRING,
-    },
-    order: {
-      type: Sequelize.INTEGER,
+
+    isCompleted: {
+      type: Sequelize.BOOLEAN,
     },
   });
 
-  return RitualCategory;
+  return RitualTask;
 };

@@ -1,45 +1,31 @@
 import React, { useState } from 'react';
 import { Input } from 'react-native-elements';
 import { TextInput, View, Image, TouchableOpacity } from 'react-native';
-import axios from 'axios';
 import { useTheme } from 'styled-components/native';
 import * as ImagePicker from 'expo-image-picker';
 import { Entypo } from '@expo/vector-icons';
 
-import Text from '../components/Text';
-import Button from '../components/Button';
-import SettingRow from '../components/SettingRow';
+import Text from '../Text';
+import Button from '../Button';
+import SettingRow from '../SettingRow';
 
-import { getRitualCategories } from '../hooks/queries/ritualCategory';
+import { getRitualCategories } from '../../hooks/queries/ritualCategory';
 
-import { API_URL } from '@env';
+import { frequenciesOptions } from '../../constants';
 
-import { ScreenContainer } from '../layout';
-
-import { frequenciesOptions } from '../constants';
-
-const CreateRitual = ({ navigation }) => {
+const CreateRitual = ({ onSubmit, isErrorCreateRitual }) => {
   const { data: ritualCategories } = getRitualCategories({});
 
   const { colors } = useTheme();
 
   const [data, setData] = useState({
-    ritualName: null,
-    ritualCategoryId: null,
-    dataType: null,
+    name: null,
+    categoryId: null,
     note: null,
+    frequency: null,
   });
 
   const [image, setImage] = useState(null);
-
-  const handleAddCategory = async () => {
-    const request = await axios.post(`${API_URL}/rituals`, {
-      name: data.ritualName,
-      category: data.ritualCategory,
-    });
-
-    navigation.navigate('CreateRitualStepScreen');
-  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -49,25 +35,30 @@ const CreateRitual = ({ navigation }) => {
       quality: 1,
     });
 
-    console.log(result);
-
     if (!result.canceled) {
       setImage(result.assets[0].uri);
     }
   };
 
+  if (!ritualCategories) {
+    return null;
+  }
+
   return (
-    <ScreenContainer>
-      <View style={{ marginTop: 24 }}>
+    <>
+      <View style={{ marginTop: 24, flex: 1, borderWidth: 0 }}>
+        <Text textAlign="center" size="big" isBold customStyle={{ paddingVertical: 24 }}>
+          Add a ritual
+        </Text>
+
         <View style={{ flexDirection: 'row' }}>
           <View style={{ width: '70%', borderWidth: 0, alignItems: 'center' }}>
             <Input
-              placeholder="Name your ritual"
               placeholderTextColor={colors.placeholder}
               autoCorrect={false}
               autoCapitalize="words"
-              value={data.ritualName}
-              label="Ritual Name"
+              value={data.name}
+              placeholder="Name your ritual"
               labelStyle={{
                 paddingHorizontal: 12,
               }}
@@ -79,7 +70,7 @@ const CreateRitual = ({ navigation }) => {
               onChangeText={(value) => {
                 return setData({
                   ...data,
-                  ritualName: value,
+                  name: value,
                 });
               }}
             />
@@ -115,8 +106,8 @@ const CreateRitual = ({ navigation }) => {
         <SettingRow
           type="select"
           text="Category"
-          value={data.ritualCategoryId}
-          options={ritualCategories?.map((item) => {
+          value={data.categoryId}
+          options={ritualCategories.map((item) => {
             return {
               label: item.name,
               value: item.id,
@@ -127,7 +118,7 @@ const CreateRitual = ({ navigation }) => {
             console.log('value:', value);
             setData({
               ...data,
-              ritualCategoryId: value,
+              categoryId: value,
             });
           }}
         />
@@ -139,7 +130,6 @@ const CreateRitual = ({ navigation }) => {
           options={frequenciesOptions}
           placeholder="Select frequency"
           onChange={(value) => {
-            console.log('value:', value);
             setData({
               ...data,
               frequency: value,
@@ -164,7 +154,7 @@ const CreateRitual = ({ navigation }) => {
               borderRadius: 10,
               color: colors.textSecondary,
             }}
-            placeholderTextColor={colors.placeholderColor}
+            placeholderTextColor={colors.placeholder}
             onChangeText={(value) => {
               console.log('value:', value);
               setData({
@@ -183,12 +173,20 @@ const CreateRitual = ({ navigation }) => {
         <Button
           style={{ alignSelf: 'center' }}
           width={220}
-          onPress={handleAddCategory}
+          onPress={() => {
+            onSubmit(data);
+          }}
           title="Create ritual"
-          isDisabled={!data.ritualCategory || !data.ritualName}
+          isDisabled={!data.ritualCategory || !data.name}
         />
+
+        {isErrorCreateRitual ? (
+          <Text marginTop={8} textColor={colors.red} textAlign="center">
+            This ritual name alraeady exists
+          </Text>
+        ) : null}
       </View>
-    </ScreenContainer>
+    </>
   );
 };
 

@@ -5,10 +5,15 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       autoIncrement: true,
     },
-    name: {
+    date: {
+      type: Sequelize.DATE,
+    },
+    note: {
       type: Sequelize.STRING,
+    },
+    startDate: {
+      type: Sequelize.DATE,
       allowNull: false,
-      unique: true,
     },
   });
 

@@ -6,7 +6,7 @@ import Button from '../components/Button';
 import Header from '../components/Header';
 import Loader from '../components/Loader';
 import Modal from '../components/Modal';
-import CreateUpdateRitual from '../components/CreateUpdateRitual';
+import CreateUpdateRitualModal from '../components/CreateUpdateRitualModal';
 
 import { ScreenContainer } from '../layout';
 import { getAllUsers } from '../hooks/queries/user';
@@ -14,7 +14,7 @@ import { removeStorageItem, getStorageItem } from '../services/storage';
 
 import { AppContext } from '../contexts/appContext';
 
-function HomeScreen() {
+function HomeScreen({ navigation }) {
   const [isRitualModalOpen, setIsRitualModalOpen] = useState(false);
 
   const { appData, updateAppData } = useContext(AppContext);
@@ -48,7 +48,7 @@ function HomeScreen() {
 
   return (
     <ScreenContainer>
-      <Header title="Home" />
+      <Header title="Home" navigation={navigation} />
 
       {isLoading ? (
         <Loader />
@@ -82,7 +82,15 @@ function HomeScreen() {
 
       <Button title="Logout" onPress={handleLogout} customStyle={{ backgroundColor: 'red' }} />
 
-      <Modal
+      <CreateUpdateRitualModal
+        navigation={navigation}
+        isOpen={isRitualModalOpen}
+        onClose={() => {
+          setIsRitualModalOpen(false);
+        }}
+      />
+
+      {/* <Modal
         height="80%"
         onClose={() => {
           setIsRitualModalOpen(false);
@@ -90,8 +98,8 @@ function HomeScreen() {
         isOpen={isRitualModalOpen}
         withCloseButton={true}
       >
-        {<CreateUpdateRitual />}
-      </Modal>
+        {<CreateUpdateRitualModal />}
+      </Modal> */}
     </ScreenContainer>
   );
 }

@@ -21,7 +21,7 @@ db.sequelize
 
 require('./routes/auth.routes')(app);
 require('./routes/user.routes')(app);
-require('./routes/ritual.routes')(app);
+require('./routes/ritualSkeleton.routes')(app);
 require('./routes/ritualCategory.routes')(app);
 
 // hello rituals

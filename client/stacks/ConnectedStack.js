@@ -7,7 +7,6 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import RitualsScreen from '../screens/RitualsScreen';
-import RitualCategoriesScreen from '../screens/RitualCategoriesScreen';
 import CreateRitualScreen from '../screens/CreateRitualScreen';
 
 const Tab = createBottomTabNavigator();
@@ -65,22 +64,6 @@ const ConnectedStack = () => {
               component={RitualsScreen}
               options={{
                 tabBarLabel: 'Rituals',
-                tabBarIcon: ({ color, size, focused }) => (
-                  <>
-                    <Ionicons
-                      name={`list${focused ? '' : '-outline'}`}
-                      size={focused ? 24 : 22}
-                      color={color}
-                    />
-                  </>
-                ),
-              }}
-            />
-            <Tab.Screen
-              name="RitualCategoriesScreen"
-              component={RitualCategoriesScreen}
-              options={{
-                tabBarLabel: 'RitualCategories',
                 tabBarIcon: ({ color, size, focused }) => (
                   <>
                     <Ionicons

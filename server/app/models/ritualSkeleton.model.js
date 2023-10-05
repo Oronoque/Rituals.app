@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const RitualCategory = sequelize.define('ritualCategory', {
+  const RitualSkeleton = sequelize.define('ritualSkeleton', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -10,13 +10,13 @@ module.exports = (sequelize, Sequelize) => {
       allowNull: false,
       unique: true,
     },
-    pictureName: {
+    frequency: {
       type: Sequelize.STRING,
     },
-    order: {
-      type: Sequelize.INTEGER,
+    note: {
+      type: Sequelize.STRING,
     },
   });
 
-  return RitualCategory;
+  return RitualSkeleton;
 };

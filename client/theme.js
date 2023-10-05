@@ -21,10 +21,11 @@ export const lightTheme = {
   colors: {
     ...greys,
     ...colors,
-    primary: '#294A2E',
+    primary: '#6f2bf0',
     tiertiary: greys.grey40,
     lightPrimary: '#f5f9f6',
     disabled: '#66aa71',
+    info: '#0080FE',
 
     text: colors.black,
     placeholder: colors.grey80,
@@ -39,8 +40,9 @@ export const lightTheme = {
 export const darkTheme = {
   colors: {
     ...colors,
-    primary: '#294A2E',
+    primary: '#6f2bf0',
     tiertiary: greys.grey40,
+    info: '#0080FE',
 
     lightPrimary: '#f5f9f6',
 

@@ -35,9 +35,9 @@ module.exports = (sequelize, Sequelize) => {
       description: {
         type: Sequelize.STRING,
       },
-      isDarkMode: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+      theme: {
+        type: Sequelize.STRING,
+        defaultValue: 'system',
       },
       isNotificationsAllowed: {
         type: Sequelize.BOOLEAN,

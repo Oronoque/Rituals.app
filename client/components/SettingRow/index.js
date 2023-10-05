@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, Switch, Dimensions } from 'react-native';
+import { View, Switch, Dimensions, TouchableOpacity, Image } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import { useTheme } from 'styled-components/native';
 
@@ -8,6 +8,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import Text from '../Text';
 
 const SettingRow = ({
+  height = 50,
   icon,
   iconColor,
   text,
@@ -17,6 +18,8 @@ const SettingRow = ({
   isActive,
   options,
   placeholder = 'Select',
+  onPress,
+  image,
 }) => {
   const { colors } = useTheme();
 
@@ -30,7 +33,7 @@ const SettingRow = ({
         borderBottomWidth: 1,
         borderBottomColor: colors.borderColor,
         paddingVertical: 4,
-        height: 50,
+        height,
       }}
     >
       <View
@@ -60,9 +63,13 @@ const SettingRow = ({
         ) : null}
 
         {type === 'text' ? (
-          <View style={{ alignItems: 'flex-end', marginRight: 30 }}>
-            <Text customStyle={{ fontStyle: 'italic', color: colors.textSecondary }}>{value}</Text>
-          </View>
+          <TouchableOpacity
+            onPress={onPress}
+            style={{ alignItems: 'flex-end', marginRight: 40 }}
+            activeOpacity={onPress ? 0 : 1}
+          >
+            <Text customStyle={{ color: colors.textSecondary }}>{value}</Text>
+          </TouchableOpacity>
         ) : null}
 
         {type === 'select' ? (

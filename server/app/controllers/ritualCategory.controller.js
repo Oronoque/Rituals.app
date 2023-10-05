@@ -79,7 +79,6 @@ exports.updateRitualCategory = async (req, res) => {
 
 exports.deleteRitualCategory = async (req, res) => {
   const { ritualCategoryId } = req.params;
-  console.log('ritualCategoryId:', ritualCategoryId);
 
   try {
     const ritualCategoryDB = await RitualCategories.findOne({ where: { id: ritualCategoryId } });

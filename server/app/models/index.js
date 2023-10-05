@@ -25,7 +25,30 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require('./user.model.js')(sequelize, Sequelize);
+db.ritualsSkeletons = require('./ritualSkeleton.model.js')(sequelize, Sequelize);
 db.rituals = require('./ritual.model.js')(sequelize, Sequelize);
 db.ritualCategories = require('./ritualCategory.model.js')(sequelize, Sequelize);
+db.ritualTasks = require('./ritualTask.model.js')(sequelize, Sequelize);
+
+db.ritualCategories.hasMany(db.ritualsSkeletons, {
+  allowNull: false,
+  foreignKey: 'ritualCategoryId',
+  onDelete: 'CASCADE',
+});
+db.ritualsSkeletons.belongsTo(db.ritualCategories);
+
+db.ritualsSkeletons.hasMany(db.rituals, {
+  allowNull: false,
+  foreignKey: 'ritualSkeletonId',
+  onDelete: 'CASCADE',
+});
+db.rituals.belongsTo(db.ritualsSkeletons);
+
+db.ritualsSkeletons.hasMany(db.ritualTasks, {
+  allowNull: false,
+  foreignKey: 'ritualSkeletonId',
+  onDelete: 'CASCADE',
+});
+db.ritualTasks.belongsTo(db.ritualsSkeletons);
 
 module.exports = db;

@@ -4,8 +4,16 @@ import styled from 'styled-components/native';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from 'styled-components/native';
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
 import { QueryClientProvider, QueryClient } from 'react-query';
+import {
+  useFonts,
+  Montserrat_400Regular,
+  Montserrat_600SemiBold,
+  Montserrat_300Light,
+  Montserrat_400Regular_Italic,
+} from '@expo-google-fonts/montserrat';
 
 import { AppProvider, AppContext } from './contexts/appContext';
 import ActivityIndicatorScreen from './components/ActivityIndicator';
@@ -33,6 +41,13 @@ function Main() {
 
   const [isAppReady, setIsAppReady] = useState(false);
 
+  let [fontsLoaded] = useFonts({
+    Montserrat_400Regular,
+    Montserrat_600SemiBold,
+    Montserrat_300Light,
+    Montserrat_400Regular_Italic,
+  });
+
   useEffect(() => {
     const checkStorageToken = async () => {
       try {
@@ -59,7 +74,7 @@ function Main() {
     checkStorageToken();
   }, []);
 
-  if (!isAppReady) {
+  if (!isAppReady || !fontsLoaded) {
     return (
       <>
         <ActivityIndicatorScreen />
@@ -72,6 +87,7 @@ function Main() {
       <ThemeProvider theme={appData.isDarkTheme ? darkTheme : lightTheme}>
         <NavigationContainer>
           <>{appData?.isAuth ? <ConnectedStack /> : <VisitorStack />}</>
+          <Toast position="top" topOffset={80} />
         </NavigationContainer>
       </ThemeProvider>
     </QueryClientProvider>
