@@ -37,7 +37,6 @@ function RegisterScreen() {
     registerMutation({
       email: data.email,
       password: data.password,
-      // username: data.username,
     });
   };
 
@@ -51,6 +50,7 @@ function RegisterScreen() {
   }, [error]);
 
   console.log('error', error);
+  console.log('hey');
 
   return (
     <ScreenContainer>

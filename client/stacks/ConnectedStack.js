@@ -3,11 +3,15 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTheme } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import RitualsScreen from '../screens/RitualsScreen';
+import PartnersScreen from '../screens/PartnersScreen';
+
 import CreateRitualScreen from '../screens/CreateRitualScreen';
+// import TableOfContentsScreen from '../screens/TableOfContentsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -75,6 +79,33 @@ const ConnectedStack = () => {
                 ),
               }}
             />
+
+            <Tab.Screen
+              name="PartnersScreen"
+              component={PartnersScreen}
+              options={{
+                tabBarLabel: 'Partners',
+                tabBarIcon: ({ color, size, focused }) => (
+                  <>
+                    <Ionicons
+                      name={`person${focused ? '' : '-outline'}`}
+                      size={focused ? 24 : 22}
+                      color={'color'}
+                    />
+                  </>
+                ),
+              }}
+            />
+            {/* <Tab.Screen
+              name="TableOfContentsScreen"
+              component={TableOfContentsScreen}
+              options={{
+                tabBarLabel: 'TableOfContents',
+                tabBarIcon: ({ color, size, focused }) => (
+                  <MaterialCommunityIcons name="table-of-contents" size={24} color="red" />
+                ),
+              }}
+            /> */}
 
             <Tab.Screen
               name="SettingsStack"

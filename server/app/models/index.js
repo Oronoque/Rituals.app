@@ -29,6 +29,7 @@ db.ritualsSkeletons = require('./ritualSkeleton.model.js')(sequelize, Sequelize)
 db.rituals = require('./ritual.model.js')(sequelize, Sequelize);
 db.ritualCategories = require('./ritualCategory.model.js')(sequelize, Sequelize);
 db.ritualTasks = require('./ritualTask.model.js')(sequelize, Sequelize);
+db.partners = require('./partner.model.js')(sequelize, Sequelize);
 
 db.ritualCategories.hasMany(db.ritualsSkeletons, {
   allowNull: false,

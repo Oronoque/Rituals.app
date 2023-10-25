@@ -35,7 +35,7 @@ const InputNetwork = ({
         value={value}
         inputStyle={{
           color: colors.text,
-          fontFamily: 'Montserrat_400Regular',
+          fontFamily: 'montserrat_400Regular',
           fontSize: 14,
           paddingLeft: 12,
         }}

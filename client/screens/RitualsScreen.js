@@ -13,7 +13,7 @@ import { ScreenContainer } from '../layout';
 
 import { AppContext } from '../contexts/appContext';
 import { getRitualSkeletons, deleteRitualSkeleton } from '../hooks/queries/ritualSkeleton';
-import { getRitualCategories } from '../hooks/queries/ritualCategory';
+import {} from '../hooks/queries/ritualCategory';
 import { generateDatesArray } from '../utils/date';
 import images from '../assets';
 
@@ -90,7 +90,7 @@ function RitualsScreen({ navigation }) {
 
   const { data: ritualsData, isLoading, refetch } = getRitualSkeletons({});
   const { mutate: deleteRitualMutation } = deleteRitualSkeleton();
-  const { data: ritualCategories } = getRitualCategories({});
+  const { data: ritualCategories } = {};
 
   if (isLoading || !ritualsData) {
     return <Loader />;
@@ -115,7 +115,7 @@ function RitualsScreen({ navigation }) {
     };
   });
 
-  const categoryItems = ritualCategories?.map((item, index) => {
+  const categoryItems = ritualCategories?.map((item) => {
     return {
       id: item.id,
       component: () => {
@@ -140,7 +140,7 @@ function RitualsScreen({ navigation }) {
 
   return (
     <ScreenContainer>
-      <Header title="Rituals" navigation={navigation} />
+      <Header title="RITUALS" navigation={navigation} />
       <HorizontalList height={100} items={dayItems} />
       <HorizontalList height={100} items={categoryItems} />
 

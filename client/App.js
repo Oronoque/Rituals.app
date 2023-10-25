@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react';
+import Constants from 'expo-constants';
 import { View } from 'react-native';
 import styled from 'styled-components/native';
 import { NavigationContainer } from '@react-navigation/native';
 import { ThemeProvider } from 'styled-components/native';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
-
 import { QueryClientProvider, QueryClient } from 'react-query';
 import {
   useFonts,
@@ -24,7 +24,7 @@ import VisitorStack from './stacks/VisitorStack';
 import ConnectedStack from './stacks/ConnectedStack';
 
 import { getStorageItem } from './services/storage';
-
+import { registerForPushNotificationsAsync } from './utils/notification';
 import { API_URL } from '@env';
 
 export const Container = styled(View)`
@@ -47,6 +47,24 @@ function Main() {
     Montserrat_300Light,
     Montserrat_400Regular_Italic,
   });
+  console.log('error', Constants.expoConfig.extra.eas.projectId);
+
+  useEffect(() => {
+    const saveUserToken = () => {
+      registerForPushNotificationsAsync().then((token) => {
+        const finalExpoToken = token || 'tokenEmulator';
+        console.log('token', finalExpoToken);
+
+        updateAppData({
+          expoToken: finalExpoToken,
+        });
+      });
+    };
+
+    if (!appData.expoToken) {
+      saveUserToken();
+    }
+  }, [appData]);
 
   useEffect(() => {
     const checkStorageToken = async () => {
@@ -54,7 +72,7 @@ function Main() {
         const internalToken = await getStorageItem('token');
 
         if (internalToken) {
-          const { data } = await axios.post(`${API_URL}/auth/ping`, {
+          const { data } = await axios.post(`https://3dfa-173-209-170-146.ngrok.io/api/auth/ping`, {
             token: internalToken,
           });
 

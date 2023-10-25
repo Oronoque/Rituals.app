@@ -11,7 +11,7 @@ export const getAllUsers = ({ options }) => {
   return useQuery(
     ['users'],
     async () => {
-      const request = await axios.get(`${API_URL}/users`);
+      const request = await axios.get(`https://3dfa-173-209-170-146.ngrok.io/api/users`);
       const { data: results } = request;
       return results.data;
     },
@@ -24,7 +24,9 @@ export const register = () => {
 
   return useMutation(
     async ({ email, password }) => {
-      const { data } = await axios.post(`${API_URL}/auth/register`, {
+      console.log('hey', `https://3dfa-173-209-170-146.ngrok.io/api/auth/register`);
+
+      const { data } = await axios.post(`https://3dfa-173-209-170-146.ngrok.io/api/auth/register`, {
         email,
         password,
       });
@@ -55,9 +57,12 @@ export const login = () => {
 
   return useMutation(
     async ({ email, password }) => {
+      console.log('email', email);
+      console.log('password', password);
+
       console.log('API_URL useMutation:', API_URL);
 
-      const { data } = await axios.post(`${API_URL}/auth/login`, {
+      const { data } = await axios.post(`http://localhost:9999/api/auth/login`, {
         email,
         password,
       });

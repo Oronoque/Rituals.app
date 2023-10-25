@@ -33,7 +33,7 @@ const CreateRitual = ({ navigation }) => {
   const [image, setImage] = useState(null);
 
   const handleAddCategory = async () => {
-    const request = await axios.post(`${API_URL}/rituals`, {
+    const request = await axios.post(`https://3dfa-173-209-170-146.ngrok.io/api/rituals`, {
       name: data.ritualName,
       category: data.ritualCategory,
     });

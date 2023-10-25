@@ -11,7 +11,7 @@ export const getRitualSkeletons = ({ options }) => {
   return useQuery(
     ['ritualSkeletons'],
     async () => {
-      const request = await axios.get(`${API_URL}/ritualSkeletons`);
+      const request = await axios.get(`https://3dfa-173-209-170-146.ngrok.io/api/ritualSkeletons`);
 
       return request.data;
     },
@@ -24,12 +24,15 @@ export const createRitualSkeleton = () => {
 
   return useMutation(
     async ({ name, categoryId, note, frequency }) => {
-      const { data } = await axios.post(`${API_URL}/ritualSkeletons`, {
-        name,
-        categoryId,
-        note,
-        frequency,
-      });
+      const { data } = await axios.post(
+        `https://3dfa-173-209-170-146.ngrok.io/api/ritualSkeletons`,
+        {
+          name,
+          categoryId,
+          note,
+          frequency,
+        },
+      );
 
       return data;
     },
@@ -50,9 +53,12 @@ export const createTasks = () => {
   return useMutation(
     async ({ ritualId, tasks }) => {
       console.log('CREATE, ritualId, tasks:', ritualId, tasks);
-      const { data } = await axios.post(`${API_URL}/ritualSkeletons/${ritualId}/tasks`, {
-        tasks,
-      });
+      const { data } = await axios.post(
+        `https://3dfa-173-209-170-146.ngrok.io/api/ritualSkeletons/${ritualId}/tasks`,
+        {
+          tasks,
+        },
+      );
 
       return data;
     },
@@ -72,7 +78,9 @@ export const deleteRitualSkeleton = () => {
 
   return useMutation(
     async ({ ritualSkeletonId }) => {
-      const { data } = await axios.delete(`${API_URL}/ritualSkeletons/${ritualSkeletonId}`);
+      const { data } = await axios.delete(
+        `https://3dfa-173-209-170-146.ngrok.io/api/ritualSkeletons/${ritualSkeletonId}`,
+      );
 
       return data;
     },

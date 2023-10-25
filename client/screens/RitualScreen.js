@@ -7,9 +7,7 @@ import Button from '../components/Button';
 import Loader from '../components/Loader';
 
 import { ScreenContainer } from '../layout';
-
 import { AppContext } from '../contexts/appContext';
-
 import { API_URL } from '@env';
 
 function RitualScreen({ route, navigation }) {
@@ -24,7 +22,9 @@ function RitualScreen({ route, navigation }) {
     const loadRitual = async () => {
       setIsLoading(true);
 
-      const res = await axios.get(`${API_URL}/rituals/${ritualIdParam}`);
+      const res = await axios.get(
+        `https://3dfa-173-209-170-146.ngrok.io/api/rituals/${ritualIdParam}`,
+      );
       const { data } = res;
 
       setRitual(data);

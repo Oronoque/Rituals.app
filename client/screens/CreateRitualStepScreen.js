@@ -19,7 +19,7 @@ function CreateRitualStep({ route, navigation }) {
   });
 
   const handleAddStep = async () => {
-    const request = await axios.post(`${API_URL}/ritualSteps`, {
+    const request = await axios.post(`https://3dfa-173-209-170-146.ngrok.io/api/ritualSteps`, {
       name: data.stepName,
       ritualName: parentRitual,
     });
