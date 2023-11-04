@@ -7,7 +7,7 @@ export const getRitualCategories = ({ options }) => {
   return useQuery(
     ['ritualCategories'],
     async () => {
-      const request = await axios.get(`http://3dfa-173-209-170-146.ngrok.io/api/ritualCategories`);
+      const request = await axios.get(`http://localhost:9999/api/ritualCategories`);
 
       return request.data;
     },

@@ -104,7 +104,7 @@ function Main() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider theme={appData.isDarkTheme ? darkTheme : lightTheme}>
         <NavigationContainer>
-          <>{appData?.isAuth ? <ConnectedStack /> : <VisitorStack />}</>
+          <>{appData?.isAuth || true ? <ConnectedStack /> : <VisitorStack />}</>
           <Toast position="top" topOffset={80} />
         </NavigationContainer>
       </ThemeProvider>

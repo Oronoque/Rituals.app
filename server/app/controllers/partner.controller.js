@@ -37,7 +37,8 @@ exports.getPartner = async (req, res) => {
 exports.createPartner = async (req, res) => {
   console.log('req.body', req.body);
 
-  const { name, description, email, youtube, facebook, twitter, instagram, order } = req.body;
+  const { name, description, email, youtube, facebook, twitter, instagram, order, websiteUrl } =
+    req.body;
 
   if (!name || !description || !email || !order) {
     return res.status(400).json({ error: 'missing_parameters' });
@@ -71,11 +72,8 @@ exports.createPartner = async (req, res) => {
 
 exports.updatePartner = async (req, res) => {
   const { partnerId } = req.params;
-  const { name, description, email, youtube, facebook, twitter, instagram, order } = req.body;
-
-  // if (!name || ) {
-  //   return res.status(400).send('params_missing');
-  // }
+  const { name, description, email, youtube, facebook, twitter, instagram, order, websiteUrl } =
+    req.body;
 
   try {
     const partnerDB = await Partners.findOne({ where: { id: partnerId } });
@@ -85,7 +83,7 @@ exports.updatePartner = async (req, res) => {
     }
 
     await Partners.update(
-      { name, description, email, youtube, facebook, twitter, instagram, order },
+      { name, description, email, youtube, facebook, twitter, instagram, order, websiteUrl },
       {
         where: {
           id: partnerId,

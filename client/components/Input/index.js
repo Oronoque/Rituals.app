@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { View, KeyboardAvoidingView, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
 import { Input } from 'react-native-elements';
 
-const InputNetwork = ({
+const InputComponent = ({
   colors,
   value,
   icon,
@@ -35,7 +35,7 @@ const InputNetwork = ({
         value={value}
         inputStyle={{
           color: colors.text,
-          fontFamily: 'montserrat_400Regular',
+          fontFamily: 'Montserrat_400Regular',
           fontSize: 14,
           paddingLeft: 12,
         }}
@@ -50,4 +50,4 @@ const InputNetwork = ({
   );
 };
 
-export default InputNetwork;
+export default InputComponent;

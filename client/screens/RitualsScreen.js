@@ -13,6 +13,7 @@ import { ScreenContainer } from '../layout';
 
 import { AppContext } from '../contexts/appContext';
 import { getRitualSkeletons, deleteRitualSkeleton } from '../hooks/queries/ritualSkeleton';
+import { getRituals } from '../hooks/queries/ritual';
 import {} from '../hooks/queries/ritualCategory';
 import { generateDatesArray } from '../utils/date';
 import images from '../assets';
@@ -88,13 +89,20 @@ function RitualsScreen({ navigation }) {
 
   const dateItems = generateDatesArray();
 
-  const { data: ritualsData, isLoading, refetch } = getRitualSkeletons({});
+  const {
+    data: ritualSkeletonsData,
+    isLoading: ritualSkeletonsIsLoading,
+    refetch: refetchRitualSkeletons,
+  } = getRitualSkeletons({});
+
+  const {
+    data: ritualsData,
+    isLoading: ritualsIsLoading,
+    refetch: refetchRituals,
+  } = getRituals({});
+
   const { mutate: deleteRitualMutation } = deleteRitualSkeleton();
   const { data: ritualCategories } = {};
-
-  if (isLoading || !ritualsData) {
-    return <Loader />;
-  }
 
   const dayItems = dateItems.map((item, index) => {
     return {
@@ -138,6 +146,10 @@ function RitualsScreen({ navigation }) {
     };
   });
 
+  if (ritualSkeletonsIsLoading || !ritualSkeletonsData) {
+    return <Loader />;
+  }
+
   return (
     <ScreenContainer>
       <Header title="RITUALS" navigation={navigation} />
@@ -146,7 +158,47 @@ function RitualsScreen({ navigation }) {
 
       <FlatList
         refreshControl={
-          <RefreshControl tintColor={colors.text} refreshing={isLoading} onRefresh={refetch} />
+          <RefreshControl
+            tintColor={colors.text}
+            refreshing={ritualSkeletonsIsLoading}
+            onRefresh={refetchRitualSkeletons}
+          />
+        }
+        horizontal
+        renderItem={({ item }) => {
+          console.log('item:', item);
+          return (
+            <View key={item.id} style={{ flexDirection: 'row' }}>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('RitualScreen', { ritualIdParam: item.id });
+                }}
+                style={{
+                  height: 60,
+                  width: 120,
+                  borderWidth: 1,
+                  borderRadius: 8,
+                  marginHorizontal: 12,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: 20,
+                }}
+              >
+                <Text isBold>{item.ritualSkeleton.name}</Text>
+                <Text>{item?.ritualCategory?.name}</Text>
+              </TouchableOpacity>
+            </View>
+          );
+        }}
+        data={ritualsData}
+      />
+      <FlatList
+        refreshControl={
+          <RefreshControl
+            tintColor={colors.text}
+            refreshing={ritualSkeletonsIsLoading}
+            onRefresh={refetchRitualSkeletons}
+          />
         }
         renderItem={({ item }) => {
           return (
@@ -180,41 +232,8 @@ function RitualsScreen({ navigation }) {
             </View>
           );
         }}
-        data={ritualsData}
+        data={ritualSkeletonsData}
       />
-
-      {/* {ritualsData.map((ritual) => {
-        return (
-          <View key={ritual.id} style={{ flexDirection: 'row' }}>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate('RitualScreen', { ritualIdParam: ritual.id });
-              }}
-              style={{
-                height: 60,
-                width: 120,
-                borderWidth: 1,
-                borderRadius: 8,
-                marginHorizontal: 12,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginBottom: 20,
-              }}
-            >
-              <Text isBold>{ritual.name}</Text>
-              <Text>{ritual?.ritualCategory?.name}</Text>
-            </TouchableOpacity>
-
-            <Button
-              width={100}
-              title="Delete"
-              onPress={() => {
-                deleteRitualMutation({ ritualSkeletonId: ritual.id });
-              }}
-            />
-          </View>
-        );
-      })} */}
     </ScreenContainer>
   );
 }

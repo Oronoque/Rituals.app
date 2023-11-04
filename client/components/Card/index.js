@@ -1,10 +1,11 @@
 // External Imports - libary i don't own
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useRef, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components/native';
-import { TouchableOpacity, View, Image } from 'react-native';
+import { TouchableOpacity, Dimensions, View, Image, Animated, ImageBackground } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { WebView } from 'react-native-webview';
 
 // External Internal my library, not my server
 import * as Linking from 'expo-linking';
@@ -13,6 +14,7 @@ import Text from '../Text';
 import CircledLetter from '../CircledLetter';
 import { CenteredContainer } from '../../layout';
 import { Link } from '@react-navigation/native';
+import { useTheme } from 'styled-components/native';
 
 // const SubContainer = styled(Container)``;
 
@@ -25,13 +27,28 @@ const Card = ({
   websiteUrl = null,
   bgColor = 'transparent',
 }) => {
+  const { colors } = useTheme();
+
+  const [showVideo, setShowVideo] = useState(false);
+
+  const handlePressVideoCover = () => {
+    setShowVideo(true);
+  };
+
+  const opacityAnimation = useRef(new Animated.Value(0)).current;
+
+  const handleOnLoadEnd = useCallback(() => {
+    Animated.timing(opacityAnimation, {
+      toValue: 1,
+      duration: 250,
+      useNativeDriver: true,
+    }).start();
+  }, [opacityAnimation]);
+  const screenWidth = Math.round(Dimensions.get('window').width);
+
   return (
     // Ternary operator example
-    <TouchableOpacity
-      style={{ borderWidth: 0, width: '100%' }}
-      onPress={onPress}
-      activeOpacity={onPress ? 1 : 0}
-    >
+    <TouchableOpacity style={{ flex: 1 }} onPress={onPress}>
       <CenteredContainer
         borderWidth={0}
         style={{ backgroundColor: bgColor, borderRadius: 16, padding: 12 }}
@@ -41,14 +58,14 @@ const Card = ({
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            height: 160,
+            // height: 160,
             width: '100%',
             borderColor: 'transparent',
             borderWidth: 0.5,
             borderRadius: 18,
             marginHorizontal: 6,
             marginVertical: 6,
-            paddingHorizontal: 12,
+            paddingHorizontal: 24,
             // elevation: 12,
             backgroundColor: '#F6F7F9',
             shadowOffset: {
@@ -94,7 +111,8 @@ const Card = ({
             </TouchableOpacity>
 
             <Text>{subtitle}</Text>
-            <View style={{ flexDirection: 'row' }}>
+            <Text>sdf</Text>
+            {/* <View style={{ flexDirection: 'row' }}>
               {networks.map((network) => {
                 return (
                   <TouchableOpacity
@@ -112,7 +130,60 @@ const Card = ({
                   </TouchableOpacity>
                 );
               })}
-            </View>
+            </View> */}
+
+            {/* <TouchableOpacity
+              onPress={handlePressVideoCover}
+              style={{
+                backgroundColor: colors.loadingPlaceholder,
+                height: 220,
+                marginTop: 12,
+              }}
+              activeOpacity={1}
+            >
+              <Animated.View
+                style={[
+                  {
+                    opacity: opacityAnimation,
+                  },
+                ]}
+              >
+                <ImageBackground
+                  onLoad={handleOnLoadEnd}
+                  height={220}
+                  style={{
+                    position: 'relative',
+                    width: screenWidth - 48,
+                    resizeMode: 'stretch',
+                    height: 220,
+                  }}
+                  source={{
+                    uri: `https://img.youtube.com/vi/rBLuvEwIF5E/0.jpg`,
+                  }}
+                >
+                  <View
+                    style={{
+                      opacity: 0.6,
+                      width: '100%',
+                      height: '100%',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      // backgroundColor: colors.lightBackground,
+                    }}
+                  >
+                    <Entypo name="youtube" size={40} color="black" style={{ zIndex: 30 }} />
+                  </View>
+                </ImageBackground>
+              </Animated.View>
+            </TouchableOpacity> */}
+
+            {showVideo ? (
+              <WebView
+                javaScriptEnabled={true}
+                domStorageEnabled={true}
+                source={{ uri: `https://youtu.be/rBLuvEwIF5E?autoplay=1` }}
+              />
+            ) : null}
           </View>
         </View>
       </CenteredContainer>
