@@ -6,6 +6,8 @@ const db = require('../models');
 const RitualCategories = db.ritualCategories;
 const Rituals = db.rituals;
 const RitualSkeletons = db.ritualsSkeletons;
+const RitualSkeletonTasks = db.ritualSkeletonTasks;
+const RitualTasks = db.ritualTasks;
 
 const frequencies = [
   {
@@ -58,6 +60,7 @@ const processCreateRituals = async () => {
     const ritualSkeletonsDB = await RitualSkeletons.findAll({});
 
     for (const ritualSkeleton of ritualSkeletonsDB) {
+      // console.log('ritualSkeleton:', ritualSkeleton);
       const nextIterationDates = [];
 
       for (let i = 0; i < 4; i++) {
@@ -79,10 +82,29 @@ const processCreateRituals = async () => {
         });
 
         if (!ritualDB) {
-          await Rituals.create({
-            startDate: iteration,
-            ritualSkeletonId: ritualSkeleton.id,
+          // create ritual
+          const createdRitual = await Rituals.create(
+            {
+              startDate: iteration,
+              ritualSkeletonId: ritualSkeleton.id,
+            },
+            { returning: true },
+          );
+
+          const ritualSkeletonTasks = await RitualSkeletonTasks.findAll({
+            where: {
+              ritualSkeletonId: ritualSkeleton.id,
+            },
           });
+
+          for (const ritualSkeketonTask of ritualSkeletonTasks) {
+            console.log('ritualSkeketonTas important k:', ritualSkeketonTask);
+            await RitualTasks.create({
+              ritualSkeletonId: ritualSkeleton.id,
+              ritualId: createdRitual.id,
+              name: ritualSkeleton.name,
+            });
+          }
         }
       }
     }

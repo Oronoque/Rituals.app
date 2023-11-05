@@ -1,9 +1,5 @@
 import { useQuery, useQueryClient, useMutation } from 'react-query';
 import axios from 'axios';
-import { useContext } from 'react';
-import { setStorageItem } from '../../services/storage';
-
-import { AppContext } from '../../contexts/appContext';
 
 import { API_URL } from '@env';
 
@@ -11,7 +7,7 @@ export const getRitualSkeletons = ({ options }) => {
   return useQuery(
     ['ritualSkeletons'],
     async () => {
-      const request = await axios.get(`http://localhost:9999/api/ritualSkeletons`);
+      const request = await axios.get(`${API_URL}/ritualSkeletons`);
 
       return request.data;
     },
@@ -22,7 +18,7 @@ export const getRitual = ({ options }) => {
   return useQuery(
     ['rituals'],
     async () => {
-      const request = await axios.get(`http://localhost:9999/api/rituals`);
+      const request = await axios.get(`${API_URL}/rituals`);
 
       return request.data;
     },
@@ -35,7 +31,7 @@ export const createRitualSkeleton = () => {
 
   return useMutation(
     async ({ name, categoryId, note, frequency }) => {
-      const { data } = await axios.post(`http://localhost:9999/api/ritualSkeletons`, {
+      const { data } = await axios.post(`${API_URL}/ritualSkeletons`, {
         name,
         categoryId,
         note,
@@ -55,18 +51,15 @@ export const createRitualSkeleton = () => {
   );
 };
 
-export const createTasks = () => {
+export const createSkeletonTasks = () => {
   const queryClient = useQueryClient();
 
   return useMutation(
     async ({ ritualId, tasks }) => {
       console.log('CREATE, ritualId, tasks:', ritualId, tasks);
-      const { data } = await axios.post(
-        `http://localhost:9999/api/ritualSkeletons/${ritualId}/tasks`,
-        {
-          tasks,
-        },
-      );
+      const { data } = await axios.post(`${API_URL}/ritualSkeletons/${ritualId}/skeletonTasks`, {
+        tasks,
+      });
 
       return data;
     },
@@ -86,9 +79,7 @@ export const deleteRitualSkeleton = () => {
 
   return useMutation(
     async ({ ritualSkeletonId }) => {
-      const { data } = await axios.delete(
-        `http://localhost:9999/api/ritualSkeletons/${ritualSkeletonId}`,
-      );
+      const { data } = await axios.delete(`${API_URL}/ritualSkeletons/${ritualSkeletonId}`);
 
       return data;
     },

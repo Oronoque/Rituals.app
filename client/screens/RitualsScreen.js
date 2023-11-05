@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import axios from 'axios';
+import moment from 'moment';
 import { TouchableOpacity, View, Image, FlatList, RefreshControl } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
@@ -7,6 +7,7 @@ import Text from '../components/Text';
 import Button from '../components/Button';
 import Loader from '../components/Loader';
 import Header from '../components/Header';
+import CardRitual from '../components/CardRitual';
 import HorizontalList from '../components/HorizontalList';
 
 import { ScreenContainer } from '../layout';
@@ -14,8 +15,9 @@ import { ScreenContainer } from '../layout';
 import { AppContext } from '../contexts/appContext';
 import { getRitualSkeletons, deleteRitualSkeleton } from '../hooks/queries/ritualSkeleton';
 import { getRituals } from '../hooks/queries/ritual';
-import {} from '../hooks/queries/ritualCategory';
+import { getRitualCategories } from '../hooks/queries/ritualCategory';
 import { generateDatesArray } from '../utils/date';
+
 import images from '../assets';
 
 const DayItem = ({ index, dayNumber, dayString, isActive, onPress }) => {
@@ -84,7 +86,12 @@ function RitualsScreen({ navigation }) {
   const { appData, updateAppData } = useContext(AppContext);
   const { colors } = useTheme();
 
-  const [activeDayIndex, setActiveDayIndex] = useState(null);
+  const [activeDayItem, setActiveDayItem] = useState({
+    dayNumber: moment().format('D'),
+    dayString: moment().format('ddd'),
+    formattedDate: moment().format('YYYY-MM-DD'),
+  });
+
   const [activeCategoryId, setActiveCategoryId] = useState(null);
 
   const dateItems = generateDatesArray();
@@ -99,29 +106,36 @@ function RitualsScreen({ navigation }) {
     data: ritualsData,
     isLoading: ritualsIsLoading,
     refetch: refetchRituals,
-  } = getRituals({});
+  } = getRituals({
+    day: activeDayItem.formattedDate,
+  });
 
   const { mutate: deleteRitualMutation } = deleteRitualSkeleton();
-  const { data: ritualCategories } = {};
+  const { data: ritualCategories } = getRitualCategories({});
 
   const dayItems = dateItems.map((item, index) => {
     return {
       id: index,
+
       component: () => {
         return (
           <DayItem
             index={index}
-            isActive={activeDayIndex === index}
+            isActive={activeDayItem.formattedDate === item.formattedDate}
             dayNumber={item.dayNumber}
             dayString={item.dayString.toUpperCase()}
-            onPress={({ index }) => {
-              setActiveDayIndex(index);
+            onPress={() => {
+              setActiveDayItem(item);
             }}
           />
         );
       },
     };
   });
+
+  useEffect(() => {
+    refetchRituals({ day: activeDayItem.formattedDate });
+  }, [activeDayItem]);
 
   const categoryItems = ritualCategories?.map((item) => {
     return {
@@ -153,46 +167,35 @@ function RitualsScreen({ navigation }) {
   return (
     <ScreenContainer>
       <Header title="RITUALS" navigation={navigation} />
-      <HorizontalList height={100} items={dayItems} />
-      <HorizontalList height={100} items={categoryItems} />
+      <View style={{ borderWidth: 0 }}>
+        <HorizontalList height={100} items={dayItems} />
+      </View>
+
+      {/* <HorizontalList height={100} items={categoryItems} /> */}
 
       <FlatList
         refreshControl={
           <RefreshControl
             tintColor={colors.text}
             refreshing={ritualSkeletonsIsLoading}
-            onRefresh={refetchRitualSkeletons}
+            onRefresh={refetchRituals}
           />
         }
-        horizontal
         renderItem={({ item }) => {
-          console.log('item:', item);
           return (
-            <View key={item.id} style={{ flexDirection: 'row' }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('RitualScreen', { ritualIdParam: item.id });
-                }}
-                style={{
-                  height: 60,
-                  width: 120,
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  marginHorizontal: 12,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: 20,
-                }}
-              >
-                <Text isBold>{item.ritualSkeleton.name}</Text>
-                <Text>{item?.ritualCategory?.name}</Text>
-              </TouchableOpacity>
-            </View>
+            <CardRitual
+              navigation={navigation}
+              ritual={item}
+              onPress={() => {
+                navigation.navigate('RitualScreen', { ritualIdParam: item.id });
+              }}
+            />
           );
         }}
         data={ritualsData}
       />
-      <FlatList
+
+      {/* <FlatList
         refreshControl={
           <RefreshControl
             tintColor={colors.text}
@@ -233,7 +236,7 @@ function RitualsScreen({ navigation }) {
           );
         }}
         data={ritualSkeletonsData}
-      />
+      /> */}
     </ScreenContainer>
   );
 }

@@ -6,4 +6,5 @@ module.exports = (app) => {
   app.use('/api/rituals', router);
 
   router.get('/', rituals.getRituals);
+  router.get('/:ritualId', rituals.getRitual);
 };

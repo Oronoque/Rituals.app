@@ -3,7 +3,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTheme } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
@@ -11,6 +10,7 @@ import RitualsScreen from '../screens/RitualsScreen';
 import PartnersScreen from '../screens/PartnersScreen';
 
 import CreateRitualScreen from '../screens/CreateRitualScreen';
+import RitualScreen from '../screens/RitualScreen';
 // import TableOfContentsScreen from '../screens/TableOfContentsScreen';
 
 const Tab = createBottomTabNavigator();
@@ -90,7 +90,7 @@ const ConnectedStack = () => {
                     <Ionicons
                       name={`person${focused ? '' : '-outline'}`}
                       size={focused ? 24 : 22}
-                      color={'color'}
+                      color={color}
                     />
                   </>
                 ),
@@ -126,6 +126,7 @@ const ConnectedStack = () => {
       </Stack.Screen>
 
       <Stack.Screen name="CreateRitual" component={CreateRitualScreen} />
+      <Stack.Screen name="RitualScreen" component={RitualScreen} />
     </Stack.Navigator>
   );
 };

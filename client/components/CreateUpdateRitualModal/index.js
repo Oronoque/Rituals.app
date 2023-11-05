@@ -1,23 +1,23 @@
-import React, { useContext, useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { ScrollView, TouchableWithoutFeedback, Keyboard, useWindowDimensions } from 'react-native';
 import { TabView } from 'react-native-tab-view';
 
 import { showToast } from '../../utils/toast';
 
-import Text from '../Text';
 import Modal from '../Modal';
 import CreateRitual from '../CreateRitual';
 import CreateTask from '../CreateTask';
-import { createRitualSkeleton, createTasks } from '../../hooks/queries/ritualSkeleton';
+import { createRitualSkeleton, createSkeletonTasks } from '../../hooks/queries/ritualSkeleton';
 
-const CreateUpdateRitualModal = ({ onClose, isOpen, navigation }) => {
+const CreateUpdateRitualModal = ({ onClose, isOpen }) => {
   const {
     mutate: createRitualMutation,
     isSuccess: isSuccessCreateRitual,
     isError: isErrorCreateRitual,
     data: createdRitual,
   } = createRitualSkeleton();
-  const { mutate: createTasksMutation, isSuccess: isSuccessCreateTasks } = createTasks();
+  const { mutate: createSkeletonTasksMutation, isSuccess: isSuccessCreateSkeletonTasks } =
+    createSkeletonTasks();
   console.log('createdRitual:', createdRitual);
 
   const [index, setIndex] = useState(0);
@@ -38,7 +38,7 @@ const CreateUpdateRitualModal = ({ onClose, isOpen, navigation }) => {
   };
 
   const handleAddTasks = ({ tasks, createdRitualId }) => {
-    createTasksMutation({
+    createSkeletonTasksMutation({
       tasks,
       ritualId: createdRitualId,
     });
@@ -51,11 +51,11 @@ const CreateUpdateRitualModal = ({ onClose, isOpen, navigation }) => {
   }, [isSuccessCreateRitual]);
 
   useEffect(() => {
-    if (isSuccessCreateTasks) {
+    if (isSuccessCreateSkeletonTasks) {
       showToast({ title: 'Ritual successfully created !' });
       onClose();
     }
-  }, [isSuccessCreateTasks]);
+  }, [isSuccessCreateSkeletonTasks]);
 
   const renderScenes = useCallback(
     ({ route }) => {

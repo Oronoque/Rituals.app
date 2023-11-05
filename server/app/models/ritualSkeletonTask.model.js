@@ -1,5 +1,5 @@
 module.exports = (sequelize, Sequelize) => {
-  const RitualTask = sequelize.define('ritualTask', {
+  const RitualSkeletonTask = sequelize.define('ritualSkeletonTask', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -8,12 +8,9 @@ module.exports = (sequelize, Sequelize) => {
     name: {
       type: Sequelize.STRING,
       allowNull: false,
-    },
-    isCompleted: {
-      type: Sequelize.BOOLEAN,
-      defaultValue: false,
+      unique: true,
     },
   });
 
-  return RitualTask;
+  return RitualSkeletonTask;
 };

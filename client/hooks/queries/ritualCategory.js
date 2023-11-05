@@ -7,7 +7,7 @@ export const getRitualCategories = ({ options }) => {
   return useQuery(
     ['ritualCategories'],
     async () => {
-      const request = await axios.get(`http://localhost:9999/api/ritualCategories`);
+      const request = await axios.get(`${API_URL}/ritualCategories`);
 
       return request.data;
     },

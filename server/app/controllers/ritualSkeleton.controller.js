@@ -4,18 +4,19 @@ const db = require('../models');
 const RitualsSkeletons = db.ritualsSkeletons;
 const RitualCategories = db.ritualCategories;
 const RitualTasks = db.ritualTasks;
+const RitualSkeletonTasks = db.ritualSkeletonTasks;
 
 exports.getRitualSkeletons = async (req, res) => {
   try {
     const ritualsSkeletons = await RitualsSkeletons.findAll({
-      include: [
-        {
-          model: RitualCategories,
-        },
-        {
-          model: RitualTasks,
-        },
-      ],
+      // include: [
+      //   {
+      //     model: RitualCategories,
+      //   },
+      //   {
+      //     model: RitualTasks,
+      //   },
+      // ],
     });
 
     return res.send(ritualsSkeletons);
@@ -49,7 +50,7 @@ exports.createRitualSkeleton = async (req, res) => {
   try {
     const { name, categoryId, note, frequency } = req.body;
 
-    if (!name || !categoryId || !note || !frequency) {
+    if (!name || !categoryId || !frequency) {
       return res.status(400).send('params_missing');
     }
 
@@ -73,7 +74,7 @@ exports.createRitualSkeleton = async (req, res) => {
   }
 };
 
-exports.createTasks = async (req, res) => {
+exports.createSkeletonTasks = async (req, res) => {
   try {
     const { ritualId } = req.params;
     const { tasks } = req.body;
@@ -83,7 +84,7 @@ exports.createTasks = async (req, res) => {
     }
 
     for (const task of tasks) {
-      const createdTask = await RitualTasks.create({
+      const createdTask = await RitualSkeletonTasks.create({
         name: task.name,
         ritualSkeletonId: ritualId,
       });

@@ -1,17 +1,25 @@
-import { useQuery, useQueryClient, useMutation } from 'react-query';
+import { useQuery } from 'react-query';
 import axios from 'axios';
-import { useContext } from 'react';
-import { setStorageItem } from '../../services/storage';
-
-import { AppContext } from '../../contexts/appContext';
 
 import { API_URL } from '@env';
 
-export const getRituals = ({ options }) => {
+export const getRituals = ({ options, day }) => {
   return useQuery(
     ['rituals'],
     async () => {
-      const request = await axios.get(`http://localhost:9999/api/rituals`);
+      const request = await axios.get(`${API_URL}/rituals?day=${day}`);
+
+      return request.data;
+    },
+    options,
+  );
+};
+
+export const getRitual = ({ options, ritualId }) => {
+  return useQuery(
+    ['rituals', { ritualId }],
+    async () => {
+      const request = await axios.get(`${API_URL}/rituals/${ritualId}`);
 
       return request.data;
     },

@@ -9,6 +9,7 @@ export const generateDatesArray = () => {
     daysBefore.push({
       dayNumber: currentDate.clone().subtract(i, 'days').format('D'),
       dayString: currentDate.clone().subtract(i, 'days').format('ddd'),
+      formattedDate: currentDate.clone().subtract(i, 'days').format('YYYY-MM-DD'),
     });
   }
 
@@ -16,12 +17,14 @@ export const generateDatesArray = () => {
     futureDays.push({
       dayNumber: currentDate.clone().add(i, 'days').format('D'),
       dayString: currentDate.clone().add(i, 'days').format('ddd'),
+      formattedDate: currentDate.clone().add(i, 'days').format('YYYY-MM-DD'),
     });
   }
 
   const currentDateInfo = {
     dayNumber: currentDate.format('D'),
     dayString: currentDate.format('ddd'),
+    formattedDate: currentDate.format('YYYY-MM-DD'),
   };
 
   const dateArray = [...daysBefore, currentDateInfo, ...futureDays];

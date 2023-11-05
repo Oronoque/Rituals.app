@@ -21,11 +21,38 @@ exports.getRituals = async (req, res) => {
       include: [
         {
           model: RitualsSkeletons,
+          // include: [
+          //   { model: RitualCategories },
+          //   {
+          //     model: RitualTasks,
+          //   },
+          // ],
         },
       ],
     });
 
     return res.send(rituals);
+  } catch (error) {
+    console.log('error:', error);
+    return res.status(500).send({ error });
+  }
+};
+exports.getRitual = async (req, res) => {
+  const { ritualId } = req.params;
+
+  try {
+    const ritualDB = await Rituals.findOne({
+      where: { id: ritualId },
+
+      include: [
+        {
+          model: RitualsSkeletons,
+          include: [{ model: RitualCategories }, { model: RitualTasks }],
+        },
+      ],
+    });
+
+    return res.send(ritualDB);
   } catch (error) {
     console.log('error:', error);
     return res.status(500).send({ error });

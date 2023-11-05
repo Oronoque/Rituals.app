@@ -5,38 +5,19 @@ import { TouchableOpacity, View } from 'react-native';
 import Text from '../components/Text';
 import Button from '../components/Button';
 import Loader from '../components/Loader';
+import CardRitual from '../components/CardRitual';
 
 import { ScreenContainer } from '../layout';
 import { AppContext } from '../contexts/appContext';
-import { API_URL } from '@env';
+import { getRitual } from '../hooks/queries/ritual';
 
 function RitualScreen({ route, navigation }) {
   const ritualIdParam = route?.params?.ritualIdParam;
 
   const { appData, updateAppData } = useContext(AppContext);
+  const { data: ritualData, isLoading } = getRitual({ ritualId: ritualIdParam });
 
-  const [ritual, setRitual] = useState();
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const loadRitual = async () => {
-      setIsLoading(true);
-
-      const res = await axios.get(
-        `https://3dfa-173-209-170-146.ngrok.io/api/rituals/${ritualIdParam}`,
-      );
-      const { data } = res;
-
-      setRitual(data);
-      setIsLoading(false);
-    };
-
-    console.log('HELLO');
-
-    loadRitual();
-  }, [ritualIdParam]);
-
-  if (isLoading || !ritual) {
+  if (isLoading || !ritualData) {
     return <Loader />;
   }
 
@@ -44,21 +25,7 @@ function RitualScreen({ route, navigation }) {
     <ScreenContainer>
       <Text>Ritual</Text>
 
-      <View
-        style={{
-          height: 60,
-          width: 120,
-          borderWidth: 1,
-          borderRadius: 8,
-          marginHorizontal: 12,
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: 20,
-        }}
-      >
-        <Text isBold>{ritual.name}</Text>
-        <Text>{ritual.category}</Text>
-      </View>
+      <CardRitual ritual={ritualData} />
 
       <Button
         title="Back"
