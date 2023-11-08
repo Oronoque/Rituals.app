@@ -6,14 +6,38 @@ import Text from '../Text';
 import Tag from '../Tag';
 import RadioInput from '../RadioInput';
 
-const RitualCard = ({ ritual, onPress }) => {
-  console.log('ritual:', ritual);
+const TaskItem = ({ name, isCompleted }) => {
+  const [isCompletedState, setIsCompletedState] = useState(isCompleted ? true : false);
   const { colors } = useTheme();
 
-  const [isCompleted, setIsCompleted] = useState(false);
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        borderWidth: 0,
+        marginBottom: 6,
+        width: '100%',
+      }}
+    >
+      <View style={{ borderWidth: 0, width: '85%' }}>
+        <Text>- {name}</Text>
+      </View>
+      <View style={{ borderWidth: 0, position: 'absolute', right: 36 }}>
+        <RadioInput
+          buttonColor="red"
+          onPress={() => {
+            setIsCompletedState(!isCompletedState);
+          }}
+          color={colors.info}
+          isSelected={isCompletedState}
+        />
+      </View>
+    </View>
+  );
+};
 
-  console.log('ritual:', ritual);
-
+const RitualCard = ({ ritual, onPress }) => {
+  console.log('ritual', ritual);
   return (
     <View key={ritual.id} style={{ flexDirection: 'row', marginTop: 12, paddingHorizontal: 12 }}>
       <TouchableOpacity
@@ -28,7 +52,7 @@ const RitualCard = ({ ritual, onPress }) => {
           padding: 12,
         }}
       >
-        <View style={{ flexDirection: 'row' }}>
+        <View style={{ flexDirection: 'row', marginBottom: 32 }}>
           <Text marginRight={4} isBold>
             {ritual.ritualSkeleton.name}
           </Text>
@@ -40,27 +64,13 @@ const RitualCard = ({ ritual, onPress }) => {
             return (
               <View
                 key={task.id}
-                style={{ flexDirection: 'row', borderWidth: 0, width: '75%', marginBottom: 8 }}
+                style={{ flexDirection: 'row', borderWidth: 0, width: '98%', marginBottom: 8 }}
               >
-                <View style={{ flexDirection: 'row', borderWidth: 0 }}>
-                  <Text>- {task.name}</Text>
-                </View>
-
-                <View style={{ borderWidth: 0, flex: 1 }}>
-                  <RadioInput
-                    buttonColor="red"
-                    onPress={() => {
-                      setIsCompleted(!isCompleted);
-                    }}
-                    color={colors.info}
-                    isSelected={isCompleted}
-                  />
-                </View>
+                <TaskItem name={task.name} isCompleted={task.isCompleted} />
               </View>
             );
           })}
         </View>
-        <View>{}</View>
       </TouchableOpacity>
     </View>
   );
