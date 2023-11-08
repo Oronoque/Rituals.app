@@ -36,8 +36,9 @@ const InputComponent = ({
         inputStyle={{
           color: colors.text,
           fontFamily: 'Montserrat_400Regular',
-          fontSize: 14,
+          fontSize: 24,
           paddingLeft: 12,
+          paddingVertical: 6,
         }}
         inputContainerStyle={{ borderBottomWidth: 0 }}
         onChangeText={(text) => {

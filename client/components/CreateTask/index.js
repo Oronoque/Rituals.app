@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Input } from 'react-native-elements';
-import { TextInput, View, Image, TouchableOpacity } from 'react-native';
+import { View } from 'react-native';
 import { useTheme } from 'styled-components/native';
-import * as ImagePicker from 'expo-image-picker';
-import { Entypo } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -14,7 +12,6 @@ const TaskItem = ({ colors, task, index, onChange, onDelete }) => {
   return (
     <View
       style={{
-        borderWidth: 1,
         marginBottom: 12,
         borderRadius: 8,
         padding: 12,
@@ -37,7 +34,6 @@ const TaskItem = ({ colors, task, index, onChange, onDelete }) => {
             placeholder="Task name"
             placeholderTextColor={colors.placeholder}
             autoCorrect={false}
-            autoCapitalize="words"
             value={task.name}
             labelStyle={{
               paddingHorizontal: 12,
@@ -92,7 +88,7 @@ const CreateTask = ({ onSubmit, createdRitualId }) => {
   return (
     <View style={{ height: '100%' }}>
       <Text textAlign="center" size="big" isBold marginTop={12} marginBottom={4}>
-        Attach tasks to it
+        Add tasks to compose your Ritual.
       </Text>
       <Text
         textAlign="center"
@@ -101,7 +97,7 @@ const CreateTask = ({ onSubmit, createdRitualId }) => {
         textColor={colors.textSecondary}
         marginBottom={12}
       >
-        (Tasks can be anything like cleaning or workng....)
+        (examples: pack bag for gym, wash dishes, write an essay)
       </Text>
 
       <View style={{ marginTop: 24, flex: 1, borderWidth: 0 }}>

@@ -89,17 +89,6 @@ function HomeScreen({ navigation }) {
           setIsRitualModalOpen(false);
         }}
       />
-
-      {/* <Modal
-        height="80%"
-        onClose={() => {
-          setIsRitualModalOpen(false);
-        }}
-        isOpen={isRitualModalOpen}
-        withCloseButton={true}
-      >
-        {<CreateUpdateRitualModal />}
-      </Modal> */}
     </ScreenContainer>
   );
 }

@@ -15,22 +15,24 @@ const colors = {
   orange: '#F9A73E',
   black: '#0e1111',
   white: 'white',
+  paper: '#E5E5E5',
+  pencil: '#5D5F75',
 };
 
 export const lightTheme = {
   colors: {
     ...greys,
     ...colors,
-    primary: '#6f2bf0',
+    primary: colors.pencil,
     tiertiary: greys.grey40,
     lightPrimary: '#f5f9f6',
     disabled: '#66aa71',
     info: '#0080FE',
 
-    text: colors.black,
+    text: colors.pencil,
     placeholder: colors.grey80,
     textSecondary: greys.grey70,
-    background: colors.white,
+    background: colors.paper,
     borderColor: greys.grey60,
     lightBackground: greys.grey20,
     loadingPlaceholder: greys.grey40,

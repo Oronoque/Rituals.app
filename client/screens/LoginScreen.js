@@ -23,9 +23,6 @@ function LoginScreen({ navigation }) {
   });
 
   const handleLogin = () => {
-    // Perform the login logic here
-    // If the login is successful, set the loggedIn state to true
-    // setLoggedIn(true);
     loginMutation({ email: data.email, password: data.password });
   };
 
@@ -109,14 +106,6 @@ function LoginScreen({ navigation }) {
         </View>
       ) : null}
 
-      {/* <Button
-      isDisabled={!data.isEmailValid || !data.isPasswordValid}
-      isNaked title="Login"
-      style={{
-        backgroundColor: !data.isEmailValid || !data.isPasswordValid
-        ? "rgba(255, 255, 255, 0.5)" // light color with 50% opacity
-        : undefined // default color
-      }} /> */}
       <TouchableOpacity
         onPress={handleLogin}
         disabled={!data.isEmailValid || !data.isPasswordValid}

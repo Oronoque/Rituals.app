@@ -11,7 +11,6 @@ import PartnersScreen from '../screens/PartnersScreen';
 
 import CreateRitualScreen from '../screens/CreateRitualScreen';
 import RitualScreen from '../screens/RitualScreen';
-// import TableOfContentsScreen from '../screens/TableOfContentsScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -96,16 +95,7 @@ const ConnectedStack = () => {
                 ),
               }}
             />
-            {/* <Tab.Screen
-              name="TableOfContentsScreen"
-              component={TableOfContentsScreen}
-              options={{
-                tabBarLabel: 'TableOfContents',
-                tabBarIcon: ({ color, size, focused }) => (
-                  <MaterialCommunityIcons name="table-of-contents" size={24} color="red" />
-                ),
-              }}
-            /> */}
+            {}
 
             <Tab.Screen
               name="SettingsStack"
