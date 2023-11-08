@@ -4,7 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon app/index.js"
+    "dev": "nodemon app/index.js",
+    "processRituals": "node app/scripts/createRituals.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.0",

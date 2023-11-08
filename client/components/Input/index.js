@@ -35,7 +35,7 @@ const InputComponent = ({
         value={value}
         inputStyle={{
           color: colors.text,
-          fontFamily: 'Montserrat_400Regular',
+          fontFamily: 'Caveat_400Regular',
           fontSize: 24,
           paddingLeft: 12,
           paddingVertical: 6,

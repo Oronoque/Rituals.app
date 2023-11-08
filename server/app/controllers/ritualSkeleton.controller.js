@@ -1,20 +1,20 @@
 const Sequelize = require('sequelize');
 
 const db = require('../models');
-const RitualsSkeletons = db.ritualsSkeletons;
+const RitualSkeletons = db.ritualSkeletons;
 const RitualCategories = db.ritualCategories;
-const RitualTasks = db.ritualTasks;
-const RitualSkeletonTasks = db.ritualSkeletonTasks;
+const Tasks = db.tasks;
+const TaskSkeletons = db.taskSkeletons;
 
 exports.getRitualSkeletons = async (req, res) => {
   try {
-    const ritualsSkeletons = await RitualsSkeletons.findAll({
+    const ritualsSkeletons = await RitualSkeletons.findAll({
       // include: [
       //   {
       //     model: RitualCategories,
       //   },
       //   {
-      //     model: RitualTasks,
+      //     model: Tasks,
       //   },
       // ],
     });
@@ -30,9 +30,9 @@ exports.getRitualSkeleton = async (req, res) => {
   try {
     const { ritualId } = req.params;
 
-    const ritualDB = await RitualsSkeletons.findOne({
+    const ritualDB = await RitualSkeletons.findOne({
       where: { id: ritualId },
-      include: [{ model: RitualTasks }],
+      include: [{ model: Tasks }],
     });
 
     if (!ritualDB) {
@@ -54,13 +54,13 @@ exports.createRitualSkeleton = async (req, res) => {
       return res.status(400).send('params_missing');
     }
 
-    const ritualDB = await RitualsSkeletons.findOne({ where: { name } });
+    const ritualDB = await RitualSkeletons.findOne({ where: { name } });
 
     if (ritualDB) {
       return res.status(403).send('already_exists');
     }
 
-    const createdRitual = await RitualsSkeletons.create({
+    const createdRitual = await RitualSkeletons.create({
       name,
       note,
       frequency,
@@ -84,7 +84,7 @@ exports.createSkeletonTasks = async (req, res) => {
     }
 
     for (const task of tasks) {
-      const createdTask = await RitualSkeletonTasks.create({
+      const createdTask = await TaskSkeletons.create({
         name: task.name,
         ritualSkeletonId: ritualId,
       });
@@ -101,13 +101,13 @@ exports.deleteRitualSkeleton = async (req, res) => {
   const { ritualId } = req.params;
 
   try {
-    const ritualDB = await RitualsSkeletons.findOne({ where: { id: ritualId } });
+    const ritualDB = await RitualSkeletons.findOne({ where: { id: ritualId } });
 
     if (!ritualDB) {
       return res.status(404).send('not_found');
     }
 
-    await RitualsSkeletons.destroy({
+    await RitualSkeletons.destroy({
       where: {
         id: ritualId,
       },

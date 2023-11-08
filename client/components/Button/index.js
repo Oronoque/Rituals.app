@@ -47,15 +47,15 @@ const Button = (props) => {
   const sizes = {
     verySmall: {
       height: 30,
-      fontSize: 11,
+      fontSize: 16,
     },
     small: {
       height: 30,
-      fontSize: 12,
+      fontSize: 18,
     },
     normal: {
       height: 40,
-      fontSize: 14,
+      fontSize: 20,
     },
   };
 

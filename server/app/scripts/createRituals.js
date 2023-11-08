@@ -3,11 +3,10 @@ const moment = require('moment');
 
 const db = require('../models');
 
-const RitualCategories = db.ritualCategories;
 const Rituals = db.rituals;
-const RitualSkeletons = db.ritualsSkeletons;
-const RitualSkeletonTasks = db.ritualSkeletonTasks;
-const RitualTasks = db.ritualTasks;
+const RitualSkeletons = db.ritualSkeletons;
+const TaskSkeletons = db.taskSkeletons;
+const Tasks = db.tasks;
 
 const frequencies = [
   {
@@ -60,7 +59,6 @@ const processCreateRituals = async () => {
     const ritualSkeletonsDB = await RitualSkeletons.findAll({});
 
     for (const ritualSkeleton of ritualSkeletonsDB) {
-      // console.log('ritualSkeleton:', ritualSkeleton);
       const nextIterationDates = [];
 
       for (let i = 0; i < 4; i++) {
@@ -72,6 +70,7 @@ const processCreateRituals = async () => {
       }
 
       for (const iteration of nextIterationDates) {
+        // check if ritual already exists in DB
         const ritualDB = await Rituals.findOne({
           where: {
             startDate: {
@@ -91,18 +90,17 @@ const processCreateRituals = async () => {
             { returning: true },
           );
 
-          const ritualSkeletonTasks = await RitualSkeletonTasks.findAll({
+          const skeletonTasksDB = await TaskSkeletons.findAll({
             where: {
               ritualSkeletonId: ritualSkeleton.id,
             },
           });
 
-          for (const ritualSkeketonTask of ritualSkeletonTasks) {
-            console.log('ritualSkeketonTas important k:', ritualSkeketonTask);
-            await RitualTasks.create({
-              ritualSkeletonId: ritualSkeleton.id,
+          for (const skeletonTask of skeletonTasksDB) {
+            await Tasks.create({
+              name: skeletonTask.name,
+              taskSkeletonId: skeletonTask.id,
               ritualId: createdRitual.id,
-              name: ritualSkeleton.name,
             });
           }
         }

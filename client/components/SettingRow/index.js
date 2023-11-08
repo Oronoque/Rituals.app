@@ -83,6 +83,7 @@ const SettingRow = ({
             style={{
               placeholder: {
                 color: colors.textSecondary,
+                fontFamily: 'Caveat_400Regular',
               },
               inputIOS: {
                 color: colors.textSecondary,

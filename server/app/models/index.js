@@ -25,53 +25,51 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 db.users = require('./user.model.js')(sequelize, Sequelize);
-db.ritualsSkeletons = require('./ritualSkeleton.model.js')(sequelize, Sequelize);
-db.rituals = require('./ritual.model.js')(sequelize, Sequelize);
 db.ritualCategories = require('./ritualCategory.model.js')(sequelize, Sequelize);
-db.ritualTasks = require('./ritualTask.model.js')(sequelize, Sequelize);
-db.ritualSkeletonTasks = require('./ritualSkeletonTask.model.js')(sequelize, Sequelize);
+db.ritualSkeletons = require('./ritualSkeleton.model.js')(sequelize, Sequelize);
+db.rituals = require('./ritual.model.js')(sequelize, Sequelize);
+db.taskSkeletons = require('./taskSkeleton.model.js')(sequelize, Sequelize);
+db.tasks = require('./task.model.js')(sequelize, Sequelize);
 db.partners = require('./partner.model.js')(sequelize, Sequelize);
 
-db.ritualCategories.hasMany(db.ritualsSkeletons, {
-  allowNull: false,
-  foreignKey: 'ritualCategoryId',
-  onDelete: 'CASCADE',
-});
-db.ritualsSkeletons.belongsTo(db.ritualCategories);
-
-db.ritualsSkeletons.hasMany(db.rituals, {
-  allowNull: false,
-  foreignKey: 'ritualSkeletonId',
-  onDelete: 'CASCADE',
-});
-db.rituals.belongsTo(db.ritualsSkeletons);
-
-db.ritualsSkeletons.hasMany(db.ritualTasks, {
-  allowNull: false,
-  foreignKey: 'ritualSkeletonId',
-  onDelete: 'CASCADE',
-});
-db.ritualTasks.belongsTo(db.ritualsSkeletons);
-
-db.ritualsSkeletons.hasMany(db.ritualSkeletonTasks, {
-  allowNull: false,
-  foreignKey: 'ritualSkeletonId',
-  onDelete: 'CASCADE',
-});
-db.ritualSkeletonTasks.belongsTo(db.ritualsSkeletons);
-
-db.rituals.hasMany(db.ritualTasks, {
+// RITUALS - TASKS
+db.rituals.hasMany(db.tasks, {
   allowNull: false,
   foreignKey: 'ritualId',
   onDelete: 'CASCADE',
 });
-db.ritualTasks.belongsTo(db.rituals);
+db.tasks.belongsTo(db.rituals);
 
-db.ritualSkeletonTasks.hasMany(db.ritualTasks, {
+// RITUALSKELETONS - TASKSKELETONS
+db.ritualSkeletons.hasMany(db.taskSkeletons, {
   allowNull: false,
-  foreignKey: 'ritualSkeletonTaskId',
+  foreignKey: 'ritualSkeletonId',
   onDelete: 'CASCADE',
 });
-db.ritualTasks.belongsTo(db.ritualSkeletonTasks);
+
+db.taskSkeletons.belongsTo(db.ritualSkeletons);
+// RITUALSKELETONS - RITUALS
+db.ritualSkeletons.hasMany(db.rituals, {
+  allowNull: false,
+  foreignKey: 'ritualSkeletonId',
+  onDelete: 'CASCADE',
+});
+db.rituals.belongsTo(db.ritualSkeletons);
+
+// TASKSKELETONS - RITUALS
+db.taskSkeletons.hasMany(db.tasks, {
+  allowNull: false,
+  foreignKey: 'taskSkeletonId',
+  onDelete: 'CASCADE',
+});
+db.tasks.belongsTo(db.taskSkeletons);
+
+// RITUALCATEGORIES - TASKSKELETONS
+db.ritualCategories.hasMany(db.ritualSkeletons, {
+  allowNull: false,
+  foreignKey: 'ritualCategoryId',
+  onDelete: 'CASCADE',
+});
+db.ritualSkeletons.belongsTo(db.ritualCategories);
 
 module.exports = db;

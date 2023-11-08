@@ -29,13 +29,14 @@ const DayItem = ({ index, dayNumber, dayString, isActive, onPress }) => {
         onPress({ index });
       }}
       style={{
+        borderWidth: 0,
         height: 100,
         width: 60,
         alignItems: 'center',
         justifyContent: 'center',
       }}
     >
-      <Text isBold marginBottom={8}>
+      <Text isBold marginBottom={8} style={{ borderWidth: 0 }}>
         {dayString}
       </Text>
       <View
@@ -174,6 +175,7 @@ function RitualsScreen({ navigation }) {
       {/* <HorizontalList height={100} items={categoryItems} /> */}
 
       <FlatList
+        style={{ borderWidth: 0 }}
         refreshControl={
           <RefreshControl
             tintColor={colors.text}

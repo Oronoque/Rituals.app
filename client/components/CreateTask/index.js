@@ -91,8 +91,8 @@ const CreateTask = ({ onSubmit, createdRitualId }) => {
         Add tasks to compose your Ritual.
       </Text>
       <Text
+        size="small"
         textAlign="center"
-        fontSize={10}
         isBold
         textColor={colors.textSecondary}
         marginBottom={12}

@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from 'react';
-import Constants from 'expo-constants';
 import { View } from 'react-native';
 import styled from 'styled-components/native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -7,13 +6,14 @@ import { ThemeProvider } from 'styled-components/native';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import { QueryClientProvider, QueryClient } from 'react-query';
+
 import {
   useFonts,
-  Montserrat_400Regular,
-  Montserrat_600SemiBold,
-  Montserrat_300Light,
-  Montserrat_400Regular_Italic,
-} from '@expo-google-fonts/montserrat';
+  Caveat_400Regular,
+  Caveat_500Medium,
+  Caveat_600SemiBold,
+  Caveat_700Bold,
+} from '@expo-google-fonts/caveat';
 
 import { AppProvider, AppContext } from './contexts/appContext';
 import ActivityIndicatorScreen from './components/ActivityIndicator';
@@ -42,12 +42,11 @@ function Main() {
   const [isAppReady, setIsAppReady] = useState(false);
 
   let [fontsLoaded] = useFonts({
-    Montserrat_400Regular,
-    Montserrat_600SemiBold,
-    Montserrat_300Light,
-    Montserrat_400Regular_Italic,
+    Caveat_400Regular,
+    Caveat_500Medium,
+    Caveat_600SemiBold,
+    Caveat_700Bold,
   });
-  console.log('error', Constants.expoConfig.extra.eas.projectId);
 
   useEffect(() => {
     const saveUserToken = () => {
@@ -91,6 +90,8 @@ function Main() {
 
     checkStorageToken();
   }, []);
+
+  console.log('fontsLoaded', fontsLoaded);
 
   if (!isAppReady || !fontsLoaded) {
     return (

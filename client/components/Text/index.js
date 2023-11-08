@@ -9,7 +9,7 @@ const TextComponent = (props) => {
     isBold = false,
     isLight = false,
     isSuperBold = false,
-    fontSize = 14,
+    fontSize = 20,
     textAlign = 'left',
     textColor,
     style,
@@ -19,7 +19,7 @@ const TextComponent = (props) => {
     marginLeft,
     paddingBottom,
     paddingTop,
-    paddingRight,
+    paddingRight = 4,
     paddingLeft,
     textDecorationLine,
     fontStyle,
@@ -34,13 +34,13 @@ const TextComponent = (props) => {
 
   const finalFontSize =
     size === 'verySmall'
-      ? 10
-      : size === 'small'
-      ? 12
-      : size === 'big'
       ? 16
-      : size === 'veryBig'
+      : size === 'small'
       ? 18
+      : size === 'big'
+      ? 20
+      : size === 'veryBig'
+      ? 22
       : fontSize;
 
   return (
@@ -53,7 +53,7 @@ const TextComponent = (props) => {
         fontStyle: fontStyle || 'normal',
         color: textColor || colors.text,
         fontSize: finalFontSize,
-        fontWeight: isBold ? '600' : isSuperBold ? 'bold' : '400',
+        fontWeight: isBold ? '600' : isSuperBold ? '700' : '400',
         textAlign,
         marginBottom,
         textTransform,
@@ -64,14 +64,17 @@ const TextComponent = (props) => {
         paddingTop,
         paddingRight,
         paddingLeft,
-        fontFamily:
-          fontStyle === 'italic'
-            ? 'Montserrat_400Regular_Italic'
-            : isBold
-            ? 'Montserrat_600SemiBold'
-            : isLight
-            ? 'Montserrat_300Light'
-            : 'Montserrat_400Regular',
+        // fontFamily: 'Caveat_400Regular',
+        // fontFamily: 'Caveat_600SemiBold',
+        // fontFamily: 'Caveat_700Bold',
+
+        fontFamily: isSuperBold
+          ? 'Caveat_700Bold'
+          : isBold
+          ? 'Caveat_600SemiBold'
+          : isLight
+          ? 'Caveat_400Regular'
+          : 'Caveat_500Medium',
         ...style,
         ...customStyle,
       }}

@@ -2,31 +2,34 @@ const { Op } = require('sequelize');
 const moment = require('moment');
 
 const db = require('../models');
-const RitualsSkeletons = db.ritualsSkeletons;
+const RitualSkeletons = db.ritualSkeletons;
 const RitualCategories = db.ritualCategories;
 const RitualTasks = db.ritualTasks;
 const Rituals = db.rituals;
+const Tasks = db.tasks;
 
 exports.getRituals = async (req, res) => {
-  const { day = moment().format('YYYY-MM-DD') } = req.query;
+  // const { day = moment().format('YYYY-MM-DD') } = req.query;
+  const { day } = req.query;
 
   try {
+    const queryQuery = {};
+
+    if (day) {
+      queryQuery.startDate = {
+        [Op.between]: [`${day} 00:00:00`, `${day} 23:59:59`],
+      };
+    }
+
     const rituals = await Rituals.findAll({
-      where: {
-        startDate: {
-          [Op.between]: [`${day} 00:00:00`, `${day} 23:59:59`],
-        },
-      },
+      where: queryQuery,
 
       include: [
         {
-          model: RitualsSkeletons,
-          // include: [
-          //   { model: RitualCategories },
-          //   {
-          //     model: RitualTasks,
-          //   },
-          // ],
+          model: RitualSkeletons,
+        },
+        {
+          model: Tasks,
         },
       ],
     });
@@ -46,7 +49,7 @@ exports.getRitual = async (req, res) => {
 
       include: [
         {
-          model: RitualsSkeletons,
+          model: RitualSkeletons,
           include: [{ model: RitualCategories }, { model: RitualTasks }],
         },
       ],
