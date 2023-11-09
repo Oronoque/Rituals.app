@@ -46,6 +46,7 @@
     "react-native-toast-message": "^2.1.6",
     "react-native-webview": "11.26.0",
     "react-query": "^3.39.3",
+    "react-uuid": "^2.0.0",
     "styled-components": "^5.3.9"
   },
   "devDependencies": {

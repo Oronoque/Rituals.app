@@ -7,4 +7,7 @@ module.exports = (app) => {
 
   router.get('/', rituals.getRituals);
   router.get('/:ritualId', rituals.getRitual);
+  router.put('/:ritualId/tasks/:taskId', rituals.updateTask);
+  router.delete('/:ritualId/tasks/:taskId', rituals.deleteTask);
+  router.post('/:ritualId/tasks', rituals.insertTask);
 };

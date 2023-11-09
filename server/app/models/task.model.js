@@ -13,6 +13,10 @@ module.exports = (sequelize, Sequelize) => {
       type: Sequelize.BOOLEAN,
       defaultValue: false,
     },
+    startDate: {
+      type: Sequelize.DATE,
+      allowNull: false,
+    },
   });
 
   return Task;

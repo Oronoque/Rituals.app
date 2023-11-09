@@ -101,6 +101,7 @@ const processCreateRituals = async () => {
               name: skeletonTask.name,
               taskSkeletonId: skeletonTask.id,
               ritualId: createdRitual.id,
+              startDate: createdRitual.startDate,
             });
           }
         }
