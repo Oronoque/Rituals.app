@@ -8,7 +8,7 @@ import { useTheme } from 'styled-components/native';
 // import Ionicons from '@expo/vector-icons/Ionicons';
 import { Ionicons } from '@expo/vector-icons';
 
-import Text from '../components/Text';
+import TextComponent from '../components/TextComponent';
 import Button from '../components/Button';
 import { AppContext } from '../contexts/appContext';
 
@@ -54,7 +54,7 @@ function RegisterScreen() {
 
   return (
     <ScreenContainer>
-      <Text>Register Screen</Text>
+      <TextComponent>Register Screen</TextComponent>
 
       <Input
         keyboardType="email-address"
@@ -164,7 +164,7 @@ function RegisterScreen() {
         title="Register"
       />
       <View style={{ marginTop: 12 }}>
-        <Text isBold>Create Account</Text>
+        <TextComponent isBold>Create Account</TextComponent>
       </View>
     </ScreenContainer>
   );

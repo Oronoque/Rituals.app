@@ -3,8 +3,7 @@ import moment from 'moment';
 import { TouchableOpacity, View, Image, FlatList, RefreshControl } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
-import Text from '../components/Text';
-import Button from '../components/Button';
+import TextComponent from '../components/TextComponent';
 import Loader from '../components/Loader';
 import Header from '../components/Header';
 import CardRitual from '../components/CardRitual';
@@ -17,8 +16,6 @@ import { getRitualSkeletons, deleteRitualSkeleton } from '../hooks/queries/ritua
 import { getRituals } from '../hooks/queries/ritual';
 import { getRitualCategories } from '../hooks/queries/ritualCategory';
 import { generateDatesArray } from '../utils/date';
-
-import images from '../assets';
 
 const DayItem = ({ index, dayNumber, dayString, isActive, onPress }) => {
   const { colors } = useTheme();
@@ -36,9 +33,9 @@ const DayItem = ({ index, dayNumber, dayString, isActive, onPress }) => {
         justifyContent: 'center',
       }}
     >
-      <Text isBold marginBottom={8} style={{ borderWidth: 0 }}>
+      <TextComponent isBold marginBottom={8} style={{ borderWidth: 0 }}>
         {dayString}
-      </Text>
+      </TextComponent>
       <View
         style={{
           borderWidth: isActive ? 2 : 0,
@@ -50,35 +47,8 @@ const DayItem = ({ index, dayNumber, dayString, isActive, onPress }) => {
           borderColor: colors.info,
         }}
       >
-        <Text isBold>{dayNumber}</Text>
+        <TextComponent isBold>{dayNumber}</TextComponent>
       </View>
-    </TouchableOpacity>
-  );
-};
-
-const RitualCategoryItem = ({ isActive, categoryId, image, name, onPress }) => {
-  const { colors } = useTheme();
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        onPress({ categoryId });
-      }}
-      style={{
-        borderWidth: isActive ? 1 : 0,
-        width: 50,
-        height: 50,
-        borderRadius: 12,
-        padding: 4,
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderColor: isActive ? colors.borderColor : null,
-        backgroundColor: isActive ? colors.lightBackground : colors.background,
-      }}
-    >
-      <Image source={image} style={{ width: 30, height: 30 }} resizeMode="contain" />
-      <Text size="small" marginTop={8}>
-        {name}
-      </Text>
     </TouchableOpacity>
   );
 };
@@ -146,7 +116,7 @@ function RitualsScreen({ navigation }) {
           <View style={{ marginRight: 12 }}>
             <RitualCategoryItem
               categoryId={item.id}
-              image={images[item?.pictureName]}
+              image={item?.pictureName}
               name={item.name}
               isActive={activeCategoryId === item.id}
               onPress={({ categoryId }) => {
@@ -156,8 +126,6 @@ function RitualsScreen({ navigation }) {
           </View>
         );
       },
-
-      image: images[item.pictureName],
     };
   });
 
@@ -167,12 +135,10 @@ function RitualsScreen({ navigation }) {
 
   return (
     <ScreenContainer>
-      <Header title="RITUALS" navigation={navigation} />
+      <Header title="Rituals" navigation={navigation} />
       <View style={{ borderWidth: 0 }}>
         <HorizontalList height={100} items={dayItems} />
       </View>
-
-      {/* <HorizontalList height={100} items={categoryItems} /> */}
 
       <FlatList
         style={{ borderWidth: 0 }}
@@ -196,49 +162,6 @@ function RitualsScreen({ navigation }) {
         }}
         data={ritualsData}
       />
-
-      {/* <FlatList
-        refreshControl={
-          <RefreshControl
-            tintColor={colors.text}
-            refreshing={ritualSkeletonsIsLoading}
-            onRefresh={refetchRitualSkeletons}
-          />
-        }
-        renderItem={({ item }) => {
-          return (
-            <View key={item.id} style={{ flexDirection: 'row' }}>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('RitualScreen', { ritualIdParam: item.id });
-                }}
-                style={{
-                  height: 60,
-                  width: 120,
-                  borderWidth: 1,
-                  borderRadius: 8,
-                  marginHorizontal: 12,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: 20,
-                }}
-              >
-                <Text isBold>{item.name}</Text>
-                <Text>{item?.ritualCategory?.name}</Text>
-              </TouchableOpacity>
-
-              <Button
-                width={100}
-                title="Delete"
-                onPress={() => {
-                  deleteRitualMutation({ ritualSkeletonId: item.id });
-                }}
-              />
-            </View>
-          );
-        }}
-        data={ritualSkeletonsData}
-      /> */}
     </ScreenContainer>
   );
 }

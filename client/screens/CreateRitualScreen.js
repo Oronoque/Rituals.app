@@ -6,7 +6,7 @@ import { useTheme } from 'styled-components/native';
 import * as ImagePicker from 'expo-image-picker';
 import { Entypo } from '@expo/vector-icons';
 
-import Text from '../components/Text';
+import TextComponent from '../components/TextComponent';
 import Button from '../components/Button';
 import SettingRow from '../components/SettingRow';
 
@@ -62,7 +62,7 @@ const CreateRitual = ({ navigation }) => {
         <View style={{ flexDirection: 'row' }}>
           <View style={{ width: '70%', borderWidth: 0, alignItems: 'center' }}>
             <Input
-              placeholder="Name your ritual"
+              placeholder="Name this ritual"
               placeholderTextColor={colors.placeholder}
               autoCorrect={false}
               autoCapitalize="words"
@@ -148,7 +148,7 @@ const CreateRitual = ({ navigation }) => {
         />
 
         <View style={{ paddingHorizontal: 19, marginTop: 12 }}>
-          <Text>Add a note : </Text>
+          <TextComponent>Add a note : </TextComponent>
 
           <TextInput
             placeholder={`In one sentence, describe the Ritual step, such as “Vacuum living room” or “Check air pressure in all tires to ensure 45 psi”`}

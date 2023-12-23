@@ -3,7 +3,7 @@ import { View, ScrollView } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 import Modal from '../../Modal';
-import Text from '../../Text';
+import TextComponent from '../../TextComponent';
 import Button from '../../Button';
 import Input from '../../Input';
 
@@ -78,9 +78,9 @@ const ModalCreateUpdatePartner = ({ partner, isOpen, onClose, numberOfPartners =
     <Modal height="90%" isOpen={isOpen} onClose={onClose}>
       <ScrollView>
         <View style={{ padding: 12, borderWidth: 0 }}>
-          <Text size="big" textAlign="center" isBold marginBottom={12}>
+          <TextComponent size="big" textAlign="center" isBold marginBottom={12}>
             {partner ? 'Update partner' : 'Create a new partner'}
-          </Text>
+          </TextComponent>
         </View>
 
         {partnerConfig.map((item, index) => {

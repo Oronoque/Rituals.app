@@ -15,7 +15,16 @@ module.exports = (sequelize, Sequelize) => {
     },
     startDate: {
       type: Sequelize.DATE,
-      allowNull: false,
+    },
+    endDate: {
+      type: Sequelize.DATE,
+    },
+    repeat: {
+      type: Sequelize.INTEGER,
+      defaultValue: 1,
+    },
+    unit: {
+      type: Sequelize.INTEGER,
     },
   });
 

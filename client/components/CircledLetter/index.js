@@ -5,7 +5,7 @@ import { View } from 'react-native';
 // External Internal my library, not my server
 
 // Internal Imports - my library, my server
-import Text from '../Text';
+import TextComponent from '../TextComponent';
 
 const CircledLetter = ({
   text,
@@ -30,9 +30,9 @@ const CircledLetter = ({
       {children ? (
         children
       ) : (
-        <Text fontSize={fontSize} textColor={fontColor} isBold>
+        <TextComponent fontSize={fontSize} textColor={fontColor} isBold>
           {text ? text[0].toUpperCase() : ''}
-        </Text>
+        </TextComponent>
       )}
     </View>
   );

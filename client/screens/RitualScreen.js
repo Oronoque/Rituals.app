@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { TouchableOpacity, View } from 'react-native';
 
-import Text from '../components/Text';
+import TextComponent from '../components/TextComponent';
 import Button from '../components/Button';
 import Loader from '../components/Loader';
 import CardRitual from '../components/CardRitual';
@@ -23,7 +23,7 @@ function RitualScreen({ route, navigation }) {
 
   return (
     <ScreenContainer>
-      <Text>Ritual</Text>
+      <TextComponent>Ritual</TextComponent>
 
       <CardRitual ritual={ritualData} />
 

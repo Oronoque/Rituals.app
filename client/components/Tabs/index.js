@@ -3,7 +3,7 @@ import { View, useWindowDimensions } from 'react-native';
 import { TabView, TabBar } from 'react-native-tab-view';
 import { useTheme } from 'styled-components/native';
 
-import Text from '../Text';
+import TextComponent from '../TextComponent';
 
 const Tabs = ({ config, activeIndex, isLazy = false }) => {
   const { colors } = useTheme();
@@ -31,12 +31,12 @@ const Tabs = ({ config, activeIndex, isLazy = false }) => {
             // borderWidth: 1,
           }}
         >
-          <Text textColor={focused ? colors.text : colors.textSecondary}>
+          <TextComponent textColor={focused ? colors.text : colors.textSecondary}>
             {route.title}{' '}
-            <Text isBold>
+            <TextComponent isBold>
               {route.key === 'all' || !route?.amount ? null : `· ${route?.amount}`}
-            </Text>
-          </Text>
+            </TextComponent>
+          </TextComponent>
         </View>
       );
     },

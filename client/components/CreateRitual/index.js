@@ -1,31 +1,54 @@
-import React, { useState } from 'react';
-import { Input } from 'react-native-elements';
-import { TextInput, View, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { TextInput, View, TouchableOpacity, FlatList, ImageBackground } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import * as ImagePicker from 'expo-image-picker';
-import { Entypo } from '@expo/vector-icons';
-
-import Text from '../Text';
+import TextComponent from '../TextComponent';
 import Button from '../Button';
-import SettingRow from '../SettingRow';
+import Scheduler from '../Scheduler';
+import NameInput from '../NameInput';
+import Stopwatch from '../Stopwatch';
+import Timer from '../Timer';
+import Tabata from '../Tabata';
+import ResistanceTraining from '../ResistanceTraining';
+import Frequency from '../Frequency';
 
 import { getRitualCategories } from '../../hooks/queries/ritualCategory';
-
 import { frequenciesOptions } from '../../constants';
 
-const CreateRitual = ({ onSubmit, isErrorCreateRitual }) => {
+const CreateRitual = ({ onSubmit, isErrorCreateRitual, initialCategoryId }) => {
   const { data: ritualCategories } = getRitualCategories({});
 
   const { colors } = useTheme();
 
+  const now = new Date();
+
   const [data, setData] = useState({
     name: null,
-    categoryId: null,
+    categoryId: initialCategoryId,
     note: null,
     frequency: null,
+    startDate: new Date(
+      now.getFullYear(),
+      now.getMonth(),
+      now.getDate(),
+      now.getHours(),
+      now.getMinutes(),
+      0,
+    ),
   });
 
+  const [estimatedTime, setEstimatedTime] = useState({ hours: '', minutes: '' });
   const [image, setImage] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isCategoryListVisible, setIsCategoryListVisible] = useState(false);
+  const [showScheduler, setShowScheduler] = useState(false);
+  const [ritualScheduled, setRitualScheduled] = useState(null);
+
+  const handleCategorySelect = (categoryId) => {
+    setData({ ...data, categoryId: categoryId });
+    setSelectedCategory(categoryId);
+    setIsCategoryListVisible(false);
+  };
 
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -44,37 +67,29 @@ const CreateRitual = ({ onSubmit, isErrorCreateRitual }) => {
     return null;
   }
 
+  useEffect(() => {
+    if (initialCategoryId) {
+      setSelectedCategory(initialCategoryId);
+    }
+  }, [initialCategoryId]);
+
+  const containerStyle = {
+    marginTop: 0,
+    flex: 1,
+    borderWidth: 0,
+  };
+
   return (
     <>
-      <View style={{ marginTop: 24, flex: 1, borderWidth: 0 }}>
-        <Text textAlign="center" size="big" isBold customStyle={{ paddingVertical: 24 }}>
-          Add a ritual
-        </Text>
-
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ width: '70%', borderWidth: 0, alignItems: 'center' }}>
-            <Input
-              placeholderTextColor={colors.placeholder}
-              autoCorrect={false}
-              autoCapitalize="words"
-              value={data.name}
-              placeholder="Name your ritual"
-              labelStyle={{
-                paddingHorizontal: 12,
-              }}
-              inputStyle={{
-                color: colors.Text,
-                fontSize: 18,
-                paddingHorizontal: 12,
-              }}
-              onChangeText={(value) => {
-                return setData({
-                  ...data,
-                  name: value,
-                });
-              }}
-            />
-          </View>
+      <ImageBackground source={{ uri: image }} style={containerStyle} resizeMode="cover">
+        <View
+          style={{
+            flex: 1,
+            borderWidth: 0,
+            containerStyle,
+            backgroundColor: colors.lightBackground,
+          }}
+        >
           <View style={{ borderWidth: 0, flex: 1, height: '100%' }}>
             <TouchableOpacity
               style={{
@@ -85,107 +100,176 @@ const CreateRitual = ({ onSubmit, isErrorCreateRitual }) => {
                 alignItems: 'center',
                 backgroundColor: colors.lightBackground,
                 borderColor: colors.borderColor,
-                borderWidth: 1,
+                borderWidth: 0,
                 alignSelf: 'center',
                 marginBottom: 4,
               }}
               onPress={pickImage}
-            >
-              {image ? (
-                <Image
-                  source={{ uri: image }}
-                  style={{ width: 60, height: 60, borderRadius: 60 }}
-                />
-              ) : (
-                <Entypo name="image" size={24} color="black" />
-              )}
-            </TouchableOpacity>
+            ></TouchableOpacity>
           </View>
-        </View>
 
-        <SettingRow
-          type="select"
-          text="Category"
-          value={data.categoryId}
-          options={ritualCategories.map((item) => {
-            return {
-              label: item.name,
-              value: item.id,
-            };
-          })}
-          placeholder="Select category"
-          onChange={(value) => {
-            console.log('value:', value);
-            setData({
-              ...data,
-              categoryId: value,
-            });
-          }}
-        />
-
-        <SettingRow
-          type="select"
-          text="Frequency"
-          value={data.frequency}
-          options={frequenciesOptions}
-          placeholder="Select frequency"
-          onChange={(value) => {
-            setData({
-              ...data,
-              frequency: value,
-            });
-          }}
-        />
-
-        <View style={{ paddingHorizontal: 19, marginTop: 12 }}>
-          <Text>Add a note : </Text>
-
-          <TextInput
-            placeholder={`In one sentence, describe the Ritual step, such as “Vacuum living room” or “Check air pressure in all tires to ensure 45 psi”`}
-            style={{
-              width: '100%',
-              minHeight: 80,
-              marginTop: 12,
-              marginBottom: 40,
-              paddingVertical: 8,
-              borderColor: colors.borderColor,
-              borderWidth: 1,
-              paddingHorizontal: 12,
-              borderRadius: 10,
-              color: colors.textSecondary,
-            }}
-            placeholderTextColor={colors.placeholder}
-            onChangeText={(value) => {
-              console.log('value:', value);
-              setData({
-                ...data,
-                note: value,
-              });
-            }}
-            value={data.note}
-            maxLength={1000}
-            multiline
-            editable
-            numberOfLines={4}
+          <NameInput
+            value={data.name}
+            onChange={(value) => setData({ ...data, name: value })}
+            colors={colors}
           />
+
+          {/* <Stopwatch />
+          <Timer />
+          <Tabata />
+          <ResistanceTraining /> */}
+
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingHorizontal: 19,
+              marginTop: 12,
+              alignItems: 'center',
+            }}
+          >
+            {isCategoryListVisible || !selectedCategory ? (
+              <View
+                style={{
+                  position: 'relative',
+                  backgroundColor: 'white',
+                  padding: 10,
+                  borderWidth: 0,
+                  borderColor: 'grey',
+                }}
+              >
+                <FlatList
+                  data={ritualCategories}
+                  keyExtractor={(item) => item.id.toString()}
+                  renderItem={({ item }) => (
+                    <TouchableOpacity
+                      onPress={() => {
+                        handleCategorySelect(item.id);
+                        setIsCategoryListVisible(false);
+                      }}
+                    >
+                      <TextComponent>{item.name}</TextComponent>
+                    </TouchableOpacity>
+                  )}
+                />
+              </View>
+            ) : (
+              <TouchableOpacity onPress={() => setIsCategoryListVisible(true)}>
+                <TextComponent>
+                  {ritualCategories.find((cat) => cat.id === selectedCategory).name}
+                </TextComponent>
+              </TouchableOpacity>
+            )}
+          </View>
+
+          <Scheduler
+            data={data || { startDate: new Date(), name: '', categoryId: '', frequency: '' }}
+            setData={setData}
+          />
+          <Frequency data={data} setData={setData} frequenciesOptions={frequenciesOptions} />
+
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              paddingHorizontal: 19,
+              marginTop: 12,
+            }}
+          >
+            <TextComponent style={{ flex: 1 }}>Estimate time required:</TextComponent>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 8 }}>
+              <TextInput
+                style={{
+                  width: 50,
+                  borderColor: colors.borderColor,
+                  borderWidth: 0,
+                  borderBottomColor: colors.borderColor,
+                  borderBottomWidth: 1,
+                  paddingHorizontal: 12,
+                  borderRadius: 10,
+                  color: colors.textSecondary,
+                }}
+                keyboardType="numeric"
+                maxLength={2} // Limit to 99 hours
+                value={estimatedTime.hours}
+                onChangeText={(value) => {
+                  setEstimatedTime({ ...estimatedTime, hours: value });
+                }}
+              />
+              <TextComponent style={{ marginLeft: 4 }}>hours</TextComponent>
+            </View>
+
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TextInput
+                style={{
+                  width: 50,
+                  borderColor: colors.borderColor,
+                  borderWidth: 0,
+                  borderBottomColor: colors.borderColor,
+                  borderBottomWidth: 1,
+                  paddingHorizontal: 12,
+                  borderRadius: 10,
+                  color: colors.textSecondary,
+                }}
+                keyboardType="numeric"
+                maxLength={2} // Limit to 59 minutes
+                value={estimatedTime.minutes}
+                onChangeText={(value) => {
+                  setEstimatedTime({ ...estimatedTime, minutes: value });
+                }}
+              />
+              <TextComponent style={{ marginLeft: 4 }}>minutes</TextComponent>
+            </View>
+          </View>
+
+          <View style={{ paddingHorizontal: 19, marginTop: 12 }}>
+            <TextComponent>note: </TextComponent>
+
+            <TextInput
+              placeholder={`write yourself a little note`}
+              style={{
+                width: '100%',
+                minHeight: 80,
+                marginTop: 12,
+                marginBottom: 40,
+                paddingVertical: 8,
+                borderColor: colors.borderColor,
+                borderWidth: 0,
+                paddingHorizontal: 12,
+                borderRadius: 10,
+                color: colors.textSecondary,
+              }}
+              placeholderTextColor={colors.placeholder}
+              onChangeText={(value) => {
+                console.log('value:', value);
+                setData({
+                  ...data,
+                  note: value,
+                });
+              }}
+              value={data.note}
+              maxLength={1000}
+              multiline
+              editable
+              numberOfLines={4}
+            />
+          </View>
+          <Button
+            style={{ alignSelf: 'center' }}
+            width={220}
+            onPress={() => {
+              onSubmit(data);
+            }}
+            title="Create ritual"
+            isDisabled={!data.ritualCategory || !data.name}
+          />
+          {isErrorCreateRitual ? (
+            <TextComponent marginTop={8} textColor={colors.red} textAlign="center">
+              This ritual name already exists
+            </TextComponent>
+          ) : null}
         </View>
-
-        <Button
-          style={{ alignSelf: 'center' }}
-          width={220}
-          onPress={() => {
-            onSubmit(data);
-          }}
-          title="Create ritual"
-          isDisabled={!data.ritualCategory || !data.name}
-        />
-
-        {isErrorCreateRitual ? (
-          <Text marginTop={8} textColor={colors.red} textAlign="center">
-            This ritual name alraeady exists
-          </Text>
-        ) : null}
-      </View>
+      </ImageBackground>
     </>
   );
 };

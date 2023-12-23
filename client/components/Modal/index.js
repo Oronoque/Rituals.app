@@ -22,7 +22,7 @@ const ModalComponent = (props) => {
             borderTopEndRadius: 25,
             borderTopStartRadius: 25,
             width: windowWidth,
-            padding: 16,
+            padding: 0,
           }}
         >
           <>

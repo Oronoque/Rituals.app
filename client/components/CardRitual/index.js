@@ -7,8 +7,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import { updateTask, deleteTask, insertTask } from '../../hooks/queries/ritual';
 
-import Text from '../Text';
-import Tag from '../Tag';
+import TextComponent from '../TextComponent';
 import RadioInput from '../RadioInput';
 import Button from '../Button';
 
@@ -60,7 +59,7 @@ const TaskItem = ({
               }}
             />
           ) : (
-            <Text>- {name}</Text>
+            <TextComponent>- {name}</TextComponent>
           )}
           <TouchableOpacity
             style={{ borderWidth: 0 }}
@@ -74,14 +73,14 @@ const TaskItem = ({
               }
             }}
           >
-            <Text
+            <TextComponent
               size="small"
               marginLeft={4}
               marginTop={isEditingMode ? 8 : 0}
               textColor={colors.info}
             >
               {isEditingMode ? 'save' : 'edit'}
-            </Text>
+            </TextComponent>
           </TouchableOpacity>
         </View>
       </View>
@@ -129,6 +128,7 @@ const RitualCard = ({ ritual }) => {
   const [createdTasks, setCreatedTasks] = useState([]);
   const [editingTaskId, setEditingTaskId] = useState(null);
   const [isCreationMode, setIsCreationMode] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const { mutate: updateTaskMutation } = updateTask();
   const { mutate: deleteTaskMutation } = deleteTask();
@@ -144,101 +144,85 @@ const RitualCard = ({ ritual }) => {
     }
   }, [insertTaskSuccess]);
 
+  const toggleExpand = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   return (
-    <View key={ritual.id} style={{ flexDirection: 'row', marginTop: 12, paddingHorizontal: 12 }}>
-      <View
+    <View key={ritual.id} style={{ marginTop: 12, paddingHorizontal: 12 }}>
+      <TouchableOpacity
+        onPress={toggleExpand}
         style={{
-          width: '100%',
-          borderWidth: 1,
+          borderWidth: 0,
           borderRadius: 8,
-          justifyContent: 'center',
           marginBottom: 20,
           padding: 6,
-          paddingVertical: 12,
         }}
       >
-        <View style={{ flexDirection: 'row', marginBottom: 32 }}>
-          <Text marginRight={4} isBold>
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <TextComponent marginRight={4} isBold>
             {ritual.ritualSkeleton.name}
-          </Text>
-          <Tag borderRadius={8}>{ritual.ritualSkeleton.frequency}</Tag>
+          </TextComponent>
+          {isExpanded && (
+            <TextComponent style={{ marginLeft: 10, backgroundColor: 'transparent' }}>
+              {ritual.ritualSkeleton.frequency}
+            </TextComponent>
+          )}
         </View>
 
-        <View style={{ borderWidth: 0 }}>
-          {finalTasks.map((task) => {
-            return (
-              <View
-                key={task.id}
-                style={{ flexDirection: 'row', borderWidth: 0, width: '98%', marginBottom: 8 }}
-              >
+        {isExpanded && (
+          <>
+            <View style={{ borderWidth: 0 }}>
+              {finalTasks.map((task) => (
                 <TaskItem
+                  key={task.id}
                   isCreationMode={isCreationMode}
                   taskId={task.id}
                   isEditingMode={editingTaskId === task.id}
                   name={task.name}
                   isCompleted={task.isCompleted}
-                  onCreate={({ name }) => {
-                    insertTaskMutation({
-                      ritualId: ritual.id,
-                      name,
-                    });
-                  }}
-                  onPressDelete={() => {
-                    deleteTaskMutation({
-                      ritualId: ritual.id,
-                      taskId: task.id,
-                    });
-                  }}
-                  onPressEdit={({ taskId }) => {
-                    setEditingTaskId(taskId);
-                  }}
+                  onCreate={({ name }) => insertTaskMutation({ ritualId: ritual.id, name })}
+                  onPressDelete={() => deleteTaskMutation({ ritualId: ritual.id, taskId: task.id })}
+                  onPressEdit={() => setEditingTaskId(task.id)}
                   onPressUpdate={({ name }) => {
-                    const payload = {
+                    updateTaskMutation({
                       taskId: task.id,
                       ritualId: ritual.id,
                       isCompleted: !task.isCompleted,
-                    };
-
-                    if (name) {
-                      payload.name = name;
-                    }
-
-                    updateTaskMutation(payload);
-
-                    console.log('eeeeee');
+                      ...(name && { name }),
+                    });
                   }}
                 />
+              ))}
+            </View>
+
+            {editingTaskId ? null : (
+              <View style={{ marginTop: 10 }}>
+                <Button
+                  onPress={() => {
+                    const newTaskId = uuid();
+                    setIsCreationMode(true);
+                    setEditingTaskId(newTaskId);
+                    setCreatedTasks([
+                      ...createdTasks,
+                      {
+                        id: newTaskId,
+                        isCompleted: false,
+                        name: '',
+                        ritualId: ritual.id,
+                        startDate: ritual.startDate,
+                      },
+                    ]);
+                  }}
+                  size="small"
+                  title="Add task"
+                  width={140}
+                />
               </View>
-            );
-          })}
-        </View>
-
-        {editingTaskId ? null : (
-          <View style={{ alignSelf: 'center' }}>
-            <Button
-              onPress={() => {
-                const newTaskId = uuid();
-
-                setIsCreationMode(true);
-                setEditingTaskId(newTaskId);
-                setCreatedTasks([
-                  ...createdTasks,
-                  {
-                    id: newTaskId,
-                    isCompleted: false,
-                    name: '',
-                    ritualId: ritual.id,
-                    startDate: ritual.startDate,
-                  },
-                ]);
-              }}
-              size="small"
-              title="Add task"
-              width={140}
-            />
-          </View>
+            )}
+          </>
         )}
-      </View>
+      </TouchableOpacity>
     </View>
   );
 };

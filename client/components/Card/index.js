@@ -10,7 +10,7 @@ import { WebView } from 'react-native-webview';
 // External Internal my library, not my server
 import * as Linking from 'expo-linking';
 // Internal Imports - my library, my server
-import Text from '../Text';
+import TextComponent from '../TextComponent';
 import CircledLetter from '../CircledLetter';
 import { CenteredContainer } from '../../layout';
 import { Link } from '@react-navigation/native';
@@ -107,11 +107,11 @@ const Card = ({
                 />
               )}
 
-              {title ? <Text style={{ fontSize: 18 }}>{title}</Text> : null}
+              {title ? <TextComponent style={{ fontSize: 18 }}>{title}</TextComponent> : null}
             </TouchableOpacity>
 
-            <Text>{subtitle}</Text>
-            <Text>sdf</Text>
+            <TextComponent>{subtitle}</TextComponent>
+            <TextComponent>sdf</TextComponent>
             {/* <View style={{ flexDirection: 'row' }}>
               {networks.map((network) => {
                 return (

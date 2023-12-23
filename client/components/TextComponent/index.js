@@ -36,11 +36,11 @@ const TextComponent = (props) => {
     size === 'verySmall'
       ? 16
       : size === 'small'
-      ? 18
-      : size === 'big'
       ? 20
+      : size === 'big'
+      ? 24
       : size === 'veryBig'
-      ? 22
+      ? 28
       : fontSize;
 
   return (
@@ -64,10 +64,6 @@ const TextComponent = (props) => {
         paddingTop,
         paddingRight,
         paddingLeft,
-        // fontFamily: 'Caveat_400Regular',
-        // fontFamily: 'Caveat_600SemiBold',
-        // fontFamily: 'Caveat_700Bold',
-
         fontFamily: isSuperBold
           ? 'Caveat_700Bold'
           : isBold

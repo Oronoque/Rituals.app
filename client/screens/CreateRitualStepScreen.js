@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useTheme } from 'styled-components/native';
 import { API_URL } from '@env';
 
-import Text from '../components/Text';
+import TextComponent from '../components/TextComponent';
 import Button from '../components/Button';
 
 import { ScreenContainer } from '../layout';
@@ -29,7 +29,7 @@ function CreateRitualStep({ route, navigation }) {
 
   return (
     <ScreenContainer>
-      <Text>Create a Ritual Step!</Text>
+      <TextComponent>Create a Ritual Step!</TextComponent>
 
       <Input
         placeholder="Name your step"

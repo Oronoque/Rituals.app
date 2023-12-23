@@ -1,9 +1,10 @@
 import React from 'react';
-import { View } from 'react-native';
+import { Touchable, View } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useTheme } from 'styled-components/native';
 
-import Text from '../Text';
+import TextComponent from '../TextComponent';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Tag = ({
   textColor,
@@ -14,13 +15,14 @@ const Tag = ({
   borderWidth = 0,
   borderColor,
   borderRadius = 12,
+  onPress,
 }) => {
   const { colors } = useTheme();
 
   const sizes = {
     small: {
-      paddingHorizontal: 6,
-      paddingVertical: 0,
+      paddingHorizontal: 10,
+      paddingVertical: 2,
       fontSize: 16,
       lineHeight: 14,
       borderRadius,
@@ -42,7 +44,8 @@ const Tag = ({
   };
 
   return (
-    <View
+    <TouchableOpacity
+      onPress={onPress}
       style={{
         borderColor,
         borderWidth,
@@ -55,15 +58,15 @@ const Tag = ({
         ...style,
       }}
     >
-      <Text
+      <TextComponent
         isBold
         textColor={textColor || colors.white}
         fontSize={sizes[size].fontSize}
         style={{ lineHeight: sizes[size].lineHeight }}
       >
         {children}
-      </Text>
-    </View>
+      </TextComponent>
+    </TouchableOpacity>
   );
 };
 

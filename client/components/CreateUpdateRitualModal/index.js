@@ -9,7 +9,7 @@ import CreateRitual from '../CreateRitual';
 import CreateTask from '../CreateTask';
 import { createRitualSkeleton, createSkeletonTasks } from '../../hooks/queries/ritualSkeleton';
 
-const CreateUpdateRitualModal = ({ onClose, isOpen }) => {
+const CreateUpdateRitualModal = ({ onClose, isOpen, initialCategoryId }) => {
   const {
     mutate: createRitualMutation,
     isSuccess: isSuccessCreateRitual,
@@ -61,14 +61,24 @@ const CreateUpdateRitualModal = ({ onClose, isOpen }) => {
     ({ route }) => {
       if (route.key === 'ritual') {
         return (
-          <CreateRitual isErrorCreateRitual={isErrorCreateRitual} onSubmit={handleAddRitual} />
+          <CreateRitual
+            isErrorCreateRitual={isErrorCreateRitual}
+            onSubmit={handleAddRitual}
+            initialCategoryId={initialCategoryId}
+          />
         );
       }
       if (route.key === 'task') {
-        return <CreateTask onSubmit={handleAddTasks} createdRitualId={createdRitual?.data?.id} />;
+        return (
+          <CreateTask
+            onSubmit={handleAddTasks}
+            createdRitualId={createdRitual?.data?.id}
+            initialCategoryId={initialCategoryId}
+          />
+        );
       }
     },
-    [createdRitual],
+    [createdRitual, initialCategoryId],
   );
 
   return (

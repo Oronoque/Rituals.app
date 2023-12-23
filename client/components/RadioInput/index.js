@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 
-import Text from '../Text';
+import TextComponent from '../TextComponent';
 
 var Style = StyleSheet.create({
   radioForm: {},
@@ -143,7 +143,7 @@ const RadioInput = ({ icon: IconComponent, text, isSelected, onPress, color }) =
     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       <View style={{ width: '90%', flexDirection: 'row', alignItems: 'center', borderWidth: 0 }}>
         {IconComponent}
-        <Text marginLeft={12}>{text}</Text>
+        <TextComponent marginLeft={12}>{text}</TextComponent>
       </View>
       <View style={{ flex: 1 }}>
         <RadioButtonInput isSelected={isSelected} onPress={onPress} buttonColor={color} />

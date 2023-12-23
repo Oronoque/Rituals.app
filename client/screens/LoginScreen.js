@@ -5,7 +5,7 @@ import { TouchableOpacity, View } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
-import Text from '../components/Text';
+import TextComponent from '../components/TextComponent';
 import Button from '../components/Button';
 
 import { ScreenContainer } from '../layout';
@@ -30,7 +30,7 @@ function LoginScreen({ navigation }) {
 
   return (
     <ScreenContainer>
-      <Text>Login Screen</Text>
+      <TextComponent>Login Screen</TextComponent>
 
       <Input
         keyboardType="email-address"
@@ -102,7 +102,7 @@ function LoginScreen({ navigation }) {
 
       {isError ? (
         <View style={{ height: 40 }}>
-          <Text textColor="red">Login failed</Text>
+          <TextComponent textColor="red">Login failed</TextComponent>
         </View>
       ) : null}
 
@@ -118,7 +118,7 @@ function LoginScreen({ navigation }) {
           alignItems: 'center',
         }}
       >
-        <Text style={{ fontWeight: 'bold' }}>Login</Text>
+        <TextComponent style={{ fontWeight: 'bold' }}>Login</TextComponent>
       </TouchableOpacity>
 
       {/* <View style={{ marginTop: 12 }}>
@@ -138,7 +138,7 @@ function LoginScreen({ navigation }) {
             alignItems: 'center',
           }}
         >
-          <Text style={{ fontWeight: 'bold' }}>Register new account</Text>
+          <TextComponent style={{ fontWeight: 'bold' }}>Register new account</TextComponent>
         </TouchableOpacity>
       </View>
     </ScreenContainer>

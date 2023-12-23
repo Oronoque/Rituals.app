@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
+
+import TextComponent from '../TextComponent';
 
 function TableOfContentCard({ tableOfContent, bgColor = 'transparent', navigation }) {
   return (
@@ -13,7 +15,7 @@ function TableOfContentCard({ tableOfContent, bgColor = 'transparent', navigatio
         }}
       >
         <View style={{ fontSize: 18, color: 'darkblue', textAlign: 'left' }}>
-          <Text>{tableOfContent.title ? tableOfContent.title : 'blank'}</Text>
+          <TextComponent>{tableOfContent.title ? tableOfContent.title : 'blank'}</TextComponent>
         </View>
       </View>
     </TouchableOpacity>

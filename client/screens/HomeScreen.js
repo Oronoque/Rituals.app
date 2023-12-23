@@ -1,23 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
-import Text from '../components/Text';
-import Button from '../components/Button';
+import TextComponent from '../components/TextComponent';
+
 import Header from '../components/Header';
-import Loader from '../components/Loader';
-import Modal from '../components/Modal';
-import CreateUpdateRitualModal from '../components/CreateUpdateRitualModal';
-
 import { ScreenContainer } from '../layout';
 import { getAllUsers } from '../hooks/queries/user';
 import { removeStorageItem, getStorageItem } from '../services/storage';
-
+import { useTheme } from 'styled-components/native';
 import { AppContext } from '../contexts/appContext';
 
-function HomeScreen({ navigation }) {
-  const [isRitualModalOpen, setIsRitualModalOpen] = useState(false);
+const navigationOptions = [
+  { title: 'Mission', screen: 'Mission' },
+  { title: 'Library', screen: 'RitualsLibrary' },
+  { title: 'Rituals', screen: 'RitualsScreen' },
+  { title: 'Partners', screen: 'PartnersScreen' },
+  { title: 'Settings', screen: 'SettingsScreen' },
+];
 
+function HomeScreen({ navigation }) {
   const { appData, updateAppData } = useContext(AppContext);
+  const { colors } = useTheme();
 
   const {
     data: usersData,
@@ -45,50 +48,38 @@ function HomeScreen({ navigation }) {
       isAuth: false,
     });
   };
-
   return (
     <ScreenContainer>
       <Header title="Home" navigation={navigation} />
-
-      {isLoading ? (
-        <Loader />
-      ) : usersData?.length === 0 ? (
-        <View style={{ borderWidth: 1 }}>
-          <Text>No users found</Text>
-        </View>
-      ) : (
-        usersData?.map((user) => {
-          return (
-            <View
-              key={user.id}
-              style={{ flexDirection: 'row', justifyContent: 'space-between', width: '80%' }}
-            >
-              <Text>{user.id}</Text>
-              <Text>{user.username}</Text>
-              <Text>{user.email}</Text>
-            </View>
-          );
-        })
-      )}
-
-      <Button
-        title="Create ritual"
-        onPress={() => {
-          setIsRitualModalOpen(true);
+      {navigationOptions.map((option, index) => (
+        <TouchableOpacity
+          key={index}
+          onPress={() => navigation.navigate(option.screen)}
+          style={{
+            marginBottom: 10,
+            alignItems: 'flex-start',
+            paddingLeft: 30,
+          }}
+        >
+          <TextComponent size="big">{option.title}</TextComponent>
+        </TouchableOpacity>
+      ))}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          marginTop: 'auto',
+          padding: 25,
         }}
-      />
+      >
+        <TouchableOpacity onPress={refetch}>
+          <TextComponent size="big">Refresh</TextComponent>
+        </TouchableOpacity>
 
-      <Button title="Refresh" onPress={refetch} />
-
-      <Button title="Logout" onPress={handleLogout} customStyle={{ backgroundColor: 'red' }} />
-
-      <CreateUpdateRitualModal
-        navigation={navigation}
-        isOpen={isRitualModalOpen}
-        onClose={() => {
-          setIsRitualModalOpen(false);
-        }}
-      />
+        <TouchableOpacity onPress={handleLogout}>
+          <TextComponent>Logout</TextComponent>
+        </TouchableOpacity>
+      </View>
     </ScreenContainer>
   );
 }

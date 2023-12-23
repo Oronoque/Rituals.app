@@ -7,6 +7,8 @@ export const getRitualSkeletons = ({ options }) => {
   return useQuery(
     ['ritualSkeletons'],
     async () => {
+      console.log(API_URL);
+
       const request = await axios.get(`${API_URL}/ritualSkeletons`);
 
       return request.data;

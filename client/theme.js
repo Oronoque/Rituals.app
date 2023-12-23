@@ -9,6 +9,20 @@ const greys = {
   grey80: '#181818',
 };
 
+const whites = {
+  whiteOpaque: 'rgba(255, 255, 255, 1)', // Fully opaque white
+  white90: 'rgba(255, 255, 255, 0.9)', // 90% opacity
+  white80: 'rgba(255, 255, 255, 0.8)', // 80% opacity
+  white70: 'rgba(255, 255, 255, 0.7)', // 70% opacity
+  white60: 'rgba(255, 255, 255, 0.6)', // 60% opacity
+  white50: 'rgba(255, 255, 255, 0.5)', // 50% opacity (semi-transparent)
+  white40: 'rgba(255, 255, 255, 0.4)', // 40% opacity
+  white30: 'rgba(255, 255, 255, 0.3)', // 30% opacity
+  white20: 'rgba(255, 255, 255, 0.2)', // 20% opacity
+  white10: 'rgba(255, 255, 255, 0.1)', // 10% opacity
+  whiteTransparent: 'rgba(255, 255, 255, 0)', // Fully transparent
+};
+
 const colors = {
   red: '#BF212F',
   green: '#009b54',
@@ -17,6 +31,7 @@ const colors = {
   white: 'white',
   paper: '#E5E5E5',
   pencil: '#5D5F75',
+  blue: '#4267B2',
 };
 
 export const lightTheme = {
@@ -32,10 +47,10 @@ export const lightTheme = {
     text: colors.pencil,
     placeholder: colors.grey80,
     textSecondary: greys.grey70,
-    background: colors.paper,
+    background: whites.white10,
     borderColor: greys.grey60,
-    lightBackground: greys.grey20,
-    loadingPlaceholder: greys.grey40,
+    lightBackground: whites.white90,
+    loadingPlaceholder: whites.white10,
   },
 };
 

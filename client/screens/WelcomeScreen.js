@@ -3,7 +3,8 @@ import { View, ScrollView } from 'react-native';
 import styled from 'styled-components/native';
 import { useTheme } from 'styled-components/native';
 
-import Text from '../components/Text';
+import TextComponent from '../components/TextComponent';
+
 import Button from '../components/Button';
 
 import { getStorageItem } from '../services/storage';
@@ -34,7 +35,7 @@ const WelcomeScreen = ({ navigation, value }) => {
 
   return (
     <Container>
-      <Text>WELCOME</Text>
+      <TextComponent>WELCOME</TextComponent>
       <Button
         title="Create an account"
         onPress={() => {

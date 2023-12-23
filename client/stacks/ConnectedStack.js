@@ -1,16 +1,22 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { FontAwesome5 } from '@expo/vector-icons';
 import { useTheme } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { CardStyleInterpolators } from '@react-navigation/stack';
 
 import HomeScreen from '../screens/HomeScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import MissionScreen from '../screens/MissionScreen';
+import RitualsLibrary from '../screens/RitualsLibrary';
 import RitualsScreen from '../screens/RitualsScreen';
 import PartnersScreen from '../screens/PartnersScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import CreateUpdateRitual from '../components/CreateUpdateRitual';
 
 import CreateRitualScreen from '../screens/CreateRitualScreen';
 import RitualScreen from '../screens/RitualScreen';
+import { NavigationContainer } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -19,7 +25,14 @@ const ConnectedStack = () => {
   const { colors } = useTheme();
 
   return (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        gestureEnabled: true,
+        gestureDirection: 'horizontal',
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+      }}
+      headerMode="none"
+    >
       <Stack.Screen
         name="TabNavigator"
         options={{
@@ -62,6 +75,33 @@ const ConnectedStack = () => {
                 ),
               }}
             />
+
+            <Tab.Screen
+              name="Mission"
+              component={MissionScreen}
+              options={{
+                tabBarLabel: 'Mission',
+                tabBarIcon: ({ color, size, focused }) => (
+                  <FontAwesome5 name="scroll" size={focused ? 24 : 22} color={color} />
+                ),
+              }}
+            />
+
+            <Tab.Screen
+              name="RitualsLibrary"
+              component={RitualsLibrary}
+              options={{
+                tabBarLabel: 'Library',
+                tabBarIcon: ({ color, size, focused }) => (
+                  <Ionicons
+                    name={`library${focused ? '' : '-outline'}`}
+                    size={focused ? 24 : 22}
+                    color={color}
+                  />
+                ),
+              }}
+            />
+
             <Tab.Screen
               name="RitualsScreen"
               component={RitualsScreen}
@@ -95,7 +135,6 @@ const ConnectedStack = () => {
                 ),
               }}
             />
-            {}
 
             <Tab.Screen
               name="SettingsStack"
@@ -117,6 +156,7 @@ const ConnectedStack = () => {
 
       <Stack.Screen name="CreateRitual" component={CreateRitualScreen} />
       <Stack.Screen name="RitualScreen" component={RitualScreen} />
+      <Stack.Screen name="CreateUpdateRitual" component={CreateUpdateRitual} />
     </Stack.Navigator>
   );
 };

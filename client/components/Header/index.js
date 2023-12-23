@@ -3,13 +3,19 @@ import { View, TouchableOpacity } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
 
-import Text from '../Text';
-import CreateUpdateRitualModal from '../CreateUpdateRitualModal';
+import TextComponent from '../TextComponent';
+import CreateUpdateRitual from '../CreateUpdateRitual';
 
 const Header = ({ title, navigation }) => {
   const { colors } = useTheme();
+  const displayTitle = title || 'default';
 
   const [isCreateRitualOpen, setIsCreateRitualOpen] = useState(false);
+  // const displayTitle = customTitle || title;
+
+  console.log('Title:', title);
+  // console.log('Custom Title:', customTitle);
+  // console.log('Display Title:', displayTitle);
 
   return (
     <>
@@ -32,7 +38,9 @@ const Header = ({ title, navigation }) => {
           <Ionicons name="add-circle" size={30} color="black" />
         </TouchableOpacity>
 
-        <Text>{title}</Text>
+        <TextComponent size="veryBig" isBold>
+          {displayTitle}
+        </TextComponent>
 
         <TouchableOpacity onPress={() => {}}>
           <Ionicons name="notifications" size={30} color="black" />
@@ -40,7 +48,7 @@ const Header = ({ title, navigation }) => {
       </View>
 
       {isCreateRitualOpen ? (
-        <CreateUpdateRitualModal
+        <CreateUpdateRitual
           navigation={navigation}
           isOpen={isCreateRitualOpen}
           onClose={() => {

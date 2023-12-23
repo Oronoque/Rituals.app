@@ -1,5 +1,5 @@
 const { Op } = require('sequelize');
-const moment = require('moment');
+const moment = require('moment-timezone');
 
 const db = require('../models');
 
@@ -39,7 +39,7 @@ const frequencies = [
   },
   {
     name: 'every_day',
-    nextIteration: (i) => moment().add(i, 'days').format('YYYY-MM-DD'),
+    nextIteration: (i) => moment().add(i, 'days').utc().format('YYYY-MM-DD'),
   },
   {
     name: 'every_week',
@@ -70,17 +70,30 @@ const processCreateRituals = async () => {
       }
 
       for (const iteration of nextIterationDates) {
+        console.log(`${iteration} 00:00:00`);
+        const startDate = moment.tz(
+          `${iteration} 00:00:00`,
+          'YYYY-MM-DD HH:mm:ss',
+          'America/Los_Angeles',
+        );
+        const endDate = moment.tz(
+          `${iteration} 23:59:59`,
+          'YYYY-MM-DD HH:mm:ss',
+          'America/Los_Angeles',
+        );
+
         // check if ritual already exists in DB
         const ritualDB = await Rituals.findOne({
           where: {
             startDate: {
-              [Op.between]: [`${iteration} 00:00:00`, `${iteration} 23:59:59`],
+              [Op.between]: [startDate, endDate],
             },
             ritualSkeletonId: ritualSkeleton.id,
           },
         });
 
         if (!ritualDB) {
+          console.log('Ritual Not Found');
           // create ritual
           const createdRitual = await Rituals.create(
             {
@@ -104,6 +117,8 @@ const processCreateRituals = async () => {
               startDate: createdRitual.startDate,
             });
           }
+        } else {
+          console.log('Ritual Found');
         }
       }
     }
