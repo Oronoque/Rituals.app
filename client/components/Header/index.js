@@ -6,16 +6,12 @@ import { Ionicons } from '@expo/vector-icons';
 import TextComponent from '../TextComponent';
 import CreateUpdateRitual from '../CreateUpdateRitual';
 
-const Header = ({ title, navigation }) => {
+const Header = ({ title, subtitle, navigation }) => {
   const { colors } = useTheme();
   const displayTitle = title || 'default';
 
   const [isCreateRitualOpen, setIsCreateRitualOpen] = useState(false);
   // const displayTitle = customTitle || title;
-
-  console.log('Title:', title);
-  // console.log('Custom Title:', customTitle);
-  // console.log('Display Title:', displayTitle);
 
   return (
     <>
@@ -38,9 +34,17 @@ const Header = ({ title, navigation }) => {
           <Ionicons name="add-circle" size={30} color="black" />
         </TouchableOpacity>
 
-        <TextComponent size="veryBig" isBold>
-          {displayTitle}
-        </TextComponent>
+        <View style={{ alignItems: 'center' }}>
+          <TextComponent size="veryBig" isBold>
+            {displayTitle}
+          </TextComponent>
+
+          {subtitle ? (
+            <TextComponent size="small" isBold>
+              {subtitle}
+            </TextComponent>
+          ) : null}
+        </View>
 
         <TouchableOpacity onPress={() => {}}>
           <Ionicons name="notifications" size={30} color="black" />

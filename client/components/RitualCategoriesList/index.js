@@ -16,7 +16,6 @@ const RitualCategoriesList = ({
     <View
       style={{
         flexDirection: 'row',
-        paddingHorizontal: 19,
         marginTop: 12,
         alignItems: 'center',
       }}
@@ -25,10 +24,7 @@ const RitualCategoriesList = ({
         <View
           style={{
             position: 'relative',
-            backgroundColor: 'white',
             padding: 10,
-            borderWidth: 0,
-            borderColor: 'grey',
           }}
         >
           <FlatList
@@ -37,11 +33,11 @@ const RitualCategoriesList = ({
             renderItem={({ item }) => (
               <TouchableOpacity
                 onPress={() => {
-                  handleCategorySelect(item.id);
+                  handleCategorySelect(item);
                   setIsCategoryListVisible(false);
                 }}
               >
-                <TextComponent>{item.name}</TextComponent>
+                <TextComponent marginBottom={12}>{item.name}</TextComponent>
               </TouchableOpacity>
             )}
           />
