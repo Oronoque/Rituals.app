@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Input } from 'react-native-elements';
-import { View } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import { useTheme } from 'styled-components/native';
 import { Ionicons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -89,7 +89,7 @@ const CreateTask = ({ onSubmit, createdRitualId }) => {
   return (
     <ScreenContainer>
       <View style={{ height: '100%' }}>
-        <TextComponent textAlign="center" size="big" isBold marginTop={12} marginBottom={4}>
+        <TextComponent textAlign="center" size="big" isBold marginTop={0} marginBottom={4}>
           Add tasks to compose your Ritual.
         </TextComponent>
         <TextComponent
@@ -102,7 +102,7 @@ const CreateTask = ({ onSubmit, createdRitualId }) => {
           (examples: pack bag for gym, wash dishes, write an essay)
         </TextComponent>
 
-        <View style={{ marginTop: 24, flex: 1, borderWidth: 0 }}>
+        <View style={{ marginTop: 24, borderWidth: 0 }}>
           {tasks.map((task, index) => {
             return (
               <>
@@ -145,16 +145,20 @@ const CreateTask = ({ onSubmit, createdRitualId }) => {
               title="Add a step"
             />
           </View>
-
-          <Button
+          {/* {currentFlow.withPrevious && (
+            <Button
+              title={currentFlowIndex === flowItems.length - 1 ? 'Previous' : 'Previous'}
+              onPress={handlePrevious}
+            />
+          )} */}
+          {/* <Button
             style={{ alignSelf: 'center', marginTop: 40 }}
             width={280}
             onPress={() => {
               onSubmit({ tasks, createdRitualId });
             }}
             title="Finish"
-            // isDisabled={!data.ritualCategory || !data.name}
-          />
+          /> */}
         </View>
       </View>
     </ScreenContainer>

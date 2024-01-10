@@ -11,6 +11,8 @@ import Timer from '../Timer';
 import Tabata from '../Tabata';
 import ResistanceTraining from '../ResistanceTraining';
 import Frequency from '../Frequency';
+import Duration from '../Duration';
+import Note from '../Note';
 
 import { getRitualCategories } from '../../hooks/queries/ritualCategory';
 import { frequenciesOptions } from '../../constants';
@@ -114,11 +116,6 @@ const CreateRitual = ({ onSubmit, isErrorCreateRitual, initialCategoryId }) => {
             colors={colors}
           />
 
-          {/* <Stopwatch />
-          <Timer />
-          <Tabata />
-          <ResistanceTraining /> */}
-
           <View
             style={{
               flexDirection: 'row',
@@ -167,93 +164,14 @@ const CreateRitual = ({ onSubmit, isErrorCreateRitual, initialCategoryId }) => {
           />
           <Frequency data={data} setData={setData} frequenciesOptions={frequenciesOptions} />
 
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              paddingHorizontal: 19,
-              marginTop: 12,
-            }}
-          >
-            <TextComponent style={{ flex: 1 }}>Estimate time required:</TextComponent>
+          <Duration
+            estimatedTime={estimatedTime}
+            setEstimatedTime={setEstimatedTime}
+            colors={colors}
+          />
 
-            <View style={{ flexDirection: 'row', alignItems: 'center', marginRight: 8 }}>
-              <TextInput
-                style={{
-                  width: 50,
-                  borderColor: colors.borderColor,
-                  borderWidth: 0,
-                  borderBottomColor: colors.borderColor,
-                  borderBottomWidth: 1,
-                  paddingHorizontal: 12,
-                  borderRadius: 10,
-                  color: colors.textSecondary,
-                }}
-                keyboardType="numeric"
-                maxLength={2} // Limit to 99 hours
-                value={estimatedTime.hours}
-                onChangeText={(value) => {
-                  setEstimatedTime({ ...estimatedTime, hours: value });
-                }}
-              />
-              <TextComponent style={{ marginLeft: 4 }}>hours</TextComponent>
-            </View>
+          <Note data={data} setData={setData} colors={colors} />
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-              <TextInput
-                style={{
-                  width: 50,
-                  borderColor: colors.borderColor,
-                  borderWidth: 0,
-                  borderBottomColor: colors.borderColor,
-                  borderBottomWidth: 1,
-                  paddingHorizontal: 12,
-                  borderRadius: 10,
-                  color: colors.textSecondary,
-                }}
-                keyboardType="numeric"
-                maxLength={2} // Limit to 59 minutes
-                value={estimatedTime.minutes}
-                onChangeText={(value) => {
-                  setEstimatedTime({ ...estimatedTime, minutes: value });
-                }}
-              />
-              <TextComponent style={{ marginLeft: 4 }}>minutes</TextComponent>
-            </View>
-          </View>
-
-          <View style={{ paddingHorizontal: 19, marginTop: 12 }}>
-            <TextComponent>note: </TextComponent>
-
-            <TextInput
-              placeholder={`write yourself a little note`}
-              style={{
-                width: '100%',
-                minHeight: 80,
-                marginTop: 12,
-                marginBottom: 40,
-                paddingVertical: 8,
-                borderColor: colors.borderColor,
-                borderWidth: 0,
-                paddingHorizontal: 12,
-                borderRadius: 10,
-                color: colors.textSecondary,
-              }}
-              placeholderTextColor={colors.placeholder}
-              onChangeText={(value) => {
-                console.log('value:', value);
-                setData({
-                  ...data,
-                  note: value,
-                });
-              }}
-              value={data.note}
-              maxLength={1000}
-              multiline
-              editable
-              numberOfLines={4}
-            />
-          </View>
           <Button
             style={{ alignSelf: 'center' }}
             width={220}

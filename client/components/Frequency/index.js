@@ -7,8 +7,8 @@ import Tag from '../Tag';
 const Frequency = ({ data, setData, frequenciesOptions }) => {
   const [isFrequencyListVisible, setIsFrequencyListVisible] = useState(false);
 
-  const handleFrequencySelection = (frequency) => {
-    setData({ ...data, frequency });
+  const handleFrequencySelection = (frequencyValue) => {
+    setData({ ...data, frequency: frequencyValue });
     setIsFrequencyListVisible(false);
   };
   const handleResetFrequency = () => {
@@ -37,7 +37,7 @@ const Frequency = ({ data, setData, frequenciesOptions }) => {
           keyExtractor={(item, index) => item.label + index}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => handleFrequencySelection(item.label)}
+              onPress={() => handleFrequencySelection(item.value)}
               style={{ padding: 10 }}
             >
               <TextComponent>{item.label}</TextComponent>

@@ -13,13 +13,15 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.oronoque.Rituals"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -34,8 +36,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "5dea0582-1bbf-432b-ba0b-1d3d4643573a"
+        "projectId": "3f81a125-0a66-4297-8e7c-d8df13e30604"
       }
-    }
+    },
+    "owner": "oronoque"
   }
 }

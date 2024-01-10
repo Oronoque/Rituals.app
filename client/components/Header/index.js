@@ -11,13 +11,12 @@ const Header = ({ title, subtitle, navigation }) => {
   const displayTitle = title || 'default';
 
   const [isCreateRitualOpen, setIsCreateRitualOpen] = useState(false);
-  // const displayTitle = customTitle || title;
 
   return (
     <>
       <View
         style={{
-          height: 50,
+          height: 100,
           width: '100%',
           justifyContent: 'space-between',
           flexDirection: 'row',
